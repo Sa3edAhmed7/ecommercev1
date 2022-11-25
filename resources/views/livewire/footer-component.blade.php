@@ -235,7 +235,7 @@
 			<div class="coppy-right-box">
 				<div class="container">
 					<div class="coppy-right-item item-left">
-						<p class="coppy-right-text">Copyright © 2022 Surfside Media. All rights reserved</p>
+						<p class="coppy-right-text">Copyright © 2022 Sa3ed Ahmed. All rights reserved</p>
 					</div>
 					<div class="coppy-right-item item-right">
 						<div class="wrap-nav horizontal-nav">
