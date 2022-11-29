@@ -81,11 +81,6 @@ class AdminEditProductComponent extends Component
         }
     }
 
-    public function remove($attr)
-    {
-        unset($this->inputs[$attr]);
-    }
-
     public function generateslug()
     {
         $this->slug = Str::slug($this->name,'-');

@@ -119,6 +119,9 @@
 												<a title="My Orders" href="{{ route('user.orders') }}">My Orders</a>
 											</li>
 											<li class="menu-item">
+												<a title="My Profile" href="{{ route('user.profile') }}">My Profile</a>
+											</li>
+											<li class="menu-item">
 												<a title="Change Pasword" href="{{ route('user.changepassword') }}">Change Pasword</a>
 											</li>
 												<form method="POST" action="{{ route('logout') }}">
@@ -189,7 +192,7 @@
 	</header>
 
     {{$slot}}
-
+	
 	@livewire('footer-component')
 	
 	<script src="{{asset('assets')}}/js/jquery-1.12.4.minb8ff.js?ver=1.12.4"></script>

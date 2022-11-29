@@ -167,7 +167,7 @@
                         <label class="col-md-4 control-label">Product Attributes</label>
                         <div class="col-md-3">
                         <select class="form-control" wire:model="attr" wire:change.prevent="add">
-                            <option value="0">Select Attribute</option>
+                            <option value="1">Select Attribute</option>
                             @foreach ($pattributes as $pattribute)
                             <option value="{{ $pattribute->id }}">{{ $pattribute->name }}</option>
                             @endforeach
@@ -181,9 +181,6 @@
                             <div class="col-md-3">
                         <input type="text" placeholder="{{ $pattributes->where('id',$attribute_arr[$key])->first()->name }}" class="form-control input-md" wire:model="attribute_values.{{ $value }}" />
                         </div>
-                        <div class="col-md-1">
-                        <button type="button" class="btn btn-danger btn-sm" wire:click.prevent="remove({{$key}})">Remove</button>
-                    </div>
                     </div>
                 @endforeach
 

@@ -2,14 +2,15 @@
 
 namespace App\Http\Livewire;
 
+use Cart;
+use Stripe;
+use App\Models\User;
 use App\Models\Order;
+use Livewire\Component;
 use App\Models\Shipping;
 use App\Models\OrderItem;
 use App\Models\Transaction;
-use Cart;
-use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
-use Stripe;
 
 class CheckoutComponent extends Component
 {
@@ -278,6 +279,7 @@ class CheckoutComponent extends Component
     public function render()
     {
         $this->verifyForCheckout();
-        return view('livewire.checkout-component')->layout('layouts.base');
+        $user = User::find(Auth::user()->id);
+        return view('livewire.checkout-component',['user'=>$user])->layout('layouts.base');
     }
 }

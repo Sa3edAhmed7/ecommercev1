@@ -111,37 +111,37 @@
                 </p>
                 <p class="row-in-form">
                     <label for="phone">Phone number<span>*</span></label>
-                    <input type="number" name="phone" value="" placeholder="10 digits format" wire:model="s_mobile">
+                    <input type="number" name="phone" value="{{$user->profile->mobile}}" placeholder="10 digits format" wire:model="s_mobile">
                     @error('s_mobile') <span class="text-danger">{{$message}}</span> @enderror
                 </p>
                 <p class="row-in-form">
                     <label for="line1">Line1:</label>
-                    <input type="text" name="line1" value="" placeholder="Street at apartment number" wire:model="s_line1">
+                    <input type="text" name="line1" value="{{$user->profile->line1}}" placeholder="Street at apartment number" wire:model="s_line1">
                     @error('s_line1') <span class="text-danger">{{$message}}</span> @enderror
                 </p>
                 <p class="row-in-form">
                     <label for="line2">Line2:</label>
-                    <input type="text" name="line2" value="" placeholder="Street at apartment number" wire:model="s_line2">
+                    <input type="text" name="line2" value="{{$user->profile->line2}}" placeholder="Street at apartment number" wire:model="s_line2">
                     @error('s_line2') <span class="text-danger">{{$message}}</span> @enderror
                 </p>
                 <p class="row-in-form">
                     <label for="country">Country<span>*</span></label>
-                    <input type="text" name="country" value="" placeholder="United States" wire:model="s_country">
+                    <input type="text" name="country" value="{{$user->profile->country}}" placeholder="United States" wire:model="s_country">
                     @error('s_country') <span class="text-danger">{{$message}}</span> @enderror
                 </p>
                 <p class="row-in-form">
                     <label for="zip-code">Postcode / ZIP:</label>
-                    <input type="number" name="zip-code" value="" placeholder="Your postal code" wire:model="s_zipcode">
+                    <input type="number" name="zip-code" value="{{$user->profile->zipcode}}" placeholder="Your postal code" wire:model="s_zipcode">
                     @error('s_zipcode') <span class="text-danger">{{$message}}</span> @enderror
                 </p>
                 <p class="row-in-form">
                     <label for="province">Province<span>*</span></label>
-                    <input type="text" name="province" value="" placeholder="Province" wire:model="s_province">
+                    <input type="text" name="province" value="{{$user->profile->province}}" placeholder="Province" wire:model="s_province">
                     @error('s_province') <span class="text-danger">{{$message}}</span> @enderror
                 </p>
                 <p class="row-in-form">
                     <label for="city">Town / City<span>*</span></label>
-                    <input type="text" name="city" value="" placeholder="City name" wire:model="s_city">
+                    <input type="text" name="city" value="{{$user->profile->city}}" placeholder="City name" wire:model="s_city">
                     @error('s_city') <span class="text-danger">{{$message}}</span> @enderror
                 </p>
             </div>

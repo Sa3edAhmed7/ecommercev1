@@ -14,6 +14,7 @@ use App\Models\ProductAttribute;
 
 class AdminAddProductComponent extends Component
 {
+    protected $listeners = ['refreshComponent'=>'$refresh'];
     use WithFileUploads;
     public $name;
     public $slug;
@@ -69,12 +70,7 @@ class AdminAddProductComponent extends Component
             array_push($this->attribute_arr,$this->attr);
         }
     }
-
-    public function remove($attr)
-    {
-        unset($this->inputs[$attr]);
-        $this->dispatchBrowserEvent('refresh-page');
-    }
+    
     public function generateslug()
     {
         $this->slug = Str::slug($this->name,'-');
