@@ -21,6 +21,7 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.css" integrity="sha512-63+XcK3ZAZFBhAVZ4irKWe9eorFG0qYsy2CaM5Z+F3kUn76ukznN0cp4SArgItSbDFD1RrrWgVMBY9C/2ZoURA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.css" integrity="sha512-KRrxEp/6rgIme11XXeYvYRYY/x6XPGwk0RsIC6PyMRc072vj2tcjBzFmn939xzjeDhj0aDO7TDMd7Rbz3OEuBQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.js" integrity="sha512-EnXkkBUGl2gBm/EIZEgwWpQNavsnBbeMtjklwAa7jLj60mJk932aqzXFmdPKCG6ge/i8iOCK0Uwl1Qp+S0zowg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 	
     @livewireStyles
 </head>
@@ -43,20 +44,14 @@
 						<div class="topbar-menu left-menu">
 							<ul>
 								<li class="menu-item" >
-									<a title="Hotline: (+123) 456 789" href="#" ><span class="icon label-before fa fa-mobile"></span>Hotline: (+123) 456 789</a>
+									<a title="Hotline: (+123) 456 789" href="#" ><span class="icon label-before fa fa-mobile"></span>Hotline: {{ $setting->phone }}</a>
 								</li>
 							</ul>
 						</div>
 						<div class="topbar-menu right-menu">
 							<ul>
 								<li class="menu-item lang-menu menu-item-has-children parent">
-									<a title="English" href="#"><span class="img label-before"><img src="{{asset('assets')}}/images/lang-en.png" alt="lang-en"></span>English<i class="fa fa-angle-down" aria-hidden="true"></i></a>
-									<ul class="submenu lang" >
-										<li class="menu-item" ><a title="hungary" href="#"><span class="img label-before"><img src="{{asset('assets')}}/images/lang-hun.png" alt="lang-hun"></span>Hungary</a></li>
-										<li class="menu-item" ><a title="german" href="#"><span class="img label-before"><img src="{{asset('assets')}}/images/lang-ger.png" alt="lang-ger" ></span>German</a></li>
-										<li class="menu-item" ><a title="french" href="#"><span class="img label-before"><img src="{{asset('assets')}}/images/lang-fra.png" alt="lang-fre"></span>French</a></li>
-										<li class="menu-item" ><a title="canada" href="#"><span class="img label-before"><img src="{{asset('assets')}}/images/lang-can.png" alt="lang-can"></span>Canada</a></li>
-									</ul>
+									<a title="English" href="#"><span class="img label-before"><img src="{{asset('assets')}}/images/lang-en.png" alt="lang-en"></span>English</a>
 								</li>
 								@if(Route::has('login'))
 								@auth
@@ -75,6 +70,9 @@
 											</li>
 											<li class="menu-item">
 											<a title="Products" href="{{ route('admin.products') }}">Products</a>
+											</li>
+											<li class="menu-item">
+											<a title="Pages" href="{{ route('admin.pages') }}">Pages</a>
 											</li>
 											<li class="menu-item">
 												<a title="HomeSilder" href="{{ route('admin.homeslider') }}">Manage Home Silder</a>
@@ -100,6 +98,14 @@
 											<li class="menu-item">
 												<a title="Settings" href="{{ route('admin.settings') }}">Settings</a>
 											</li>
+											<li class="menu-item">
+												<a title="AboutPayment" href="{{ route('admin.aboutpayment') }}">AboutPayment</a>
+											</li>
+
+											<li class="menu-item">
+												<a title="Links App" href="{{ route('admin.linkapp') }}">Links App</a>
+											</li>
+
 											<form method="POST" action="{{ route('logout') }}">
                                     		@csrf
 											<li class="menu-item" >
@@ -159,34 +165,7 @@
 
 					</div>
 				</div>
-
-				<div class="nav-section header-sticky">
-
-					<div class="primary-nav-section">
-						<div class="container">
-							<ul class="nav primary clone-main-menu" id="mercado_main" data-menuname="Main menu" >
-								<li class="menu-item home-icon">
-									<a href="/" class="link-term mercado-item-title"><i class="fa fa-home" aria-hidden="true"></i></a>
-								</li>
-								<li class="menu-item">
-									<a href="about-us.html" class="link-term mercado-item-title">About Us</a>
-								</li>
-								<li class="menu-item">
-									<a href="/shop" class="link-term mercado-item-title">Shop</a>
-								</li>
-								<li class="menu-item">
-									<a href="/cart" class="link-term mercado-item-title">Cart</a>
-								</li>
-								<li class="menu-item">
-									<a href="/checkout" class="link-term mercado-item-title">Checkout</a>
-								</li>
-								<li class="menu-item">
-									<a href="/contact-us" class="link-term mercado-item-title">Contact Us</a>
-								</li>															
-							</ul>
-						</div>
-					</div>
-				</div>
+				@livewire('header-component')
 			</div>
 		</div>
 	</header>
@@ -212,6 +191,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.js" integrity="sha512-EnXkkBUGl2gBm/EIZEgwWpQNavsnBbeMtjklwAa7jLj60mJk932aqzXFmdPKCG6ge/i8iOCK0Uwl1Qp+S0zowg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 	<script src="https://cdn.tiny.cloud/1/q49nzqhhac1g2vljd07n2ngq1ps81nsflh401f8j3m3v86vq/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
     @livewireScripts
 
 	@stack('scripts')

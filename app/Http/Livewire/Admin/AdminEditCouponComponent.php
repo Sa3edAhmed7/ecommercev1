@@ -38,6 +38,13 @@ class AdminEditCouponComponent extends Component
 
     public function updateCoupon()
     {
+        $this->validate([
+            'code' => 'required|unique:coupons',
+            'type' =>  'required',
+            'value' => 'required|numeric',
+            'cart_value' => 'required|numeric',
+            'expiry_date' => 'required'
+        ]);
         $coupon =  Coupon::findOrFail($this->coupon_id);
         $coupon->code = $this->code;
         $coupon->type = $this->type;

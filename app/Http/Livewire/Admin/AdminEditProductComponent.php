@@ -86,8 +86,44 @@ class AdminEditProductComponent extends Component
         $this->slug = Str::slug($this->name,'-');
     }
 
+    public function updated($fields)
+    {
+        $this->validateOnly($fields,[
+            'name' => 'required',
+            'slug' =>  'required|unique:products',
+            'short_description' =>  'required',
+            'description' =>  'required',
+            'regular_price' =>  'required',
+            'sale_price' =>  'required',
+            'SKU' =>  'required',
+            'stock_status' =>  'required',
+            'featured' =>  'required',
+            'quantity' =>  'required',
+            'image' =>  'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'images' => 'required|array',
+            'images.*' => 'mimes:jpeg,png,jpg,gif,svg',
+            'category_id' =>  'required',
+        ]);
+    }
+
     public function updateProduct()
     {
+        $this->validate([
+            'name' => 'required',
+            'slug' =>  'required|unique:products',
+            'short_description' =>  'required',
+            'description' =>  'required',
+            'regular_price' =>  'required',
+            'sale_price' =>  'required',
+            'SKU' =>  'required',
+            'stock_status' =>  'required',
+            'featured' =>  'required',
+            'quantity' =>  'required',
+            'image' =>  'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'images' => 'required|array',
+            'images.*' => 'mimes:jpeg,png,jpg,gif,svg',
+            'category_id' =>  'required',
+        ]);
         $product = Product::findOrFail($this->product_id);
         $product->name = $this->name;
         $product->slug = $this->slug;

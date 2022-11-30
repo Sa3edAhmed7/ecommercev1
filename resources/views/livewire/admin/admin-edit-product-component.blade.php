@@ -44,13 +44,6 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                        <label class="col-md-4 control-label">Description</label>
-                        <div class="col-md-4" wire:ignore>
-                    <textarea class="form-control" id="description" placeholder="Description" wire:model="description"></textarea>
-                    @error('description') <span class="text-danger">{{$message}}</span> @enderror
-                    </div>
-                </div>
 
                 <div class="form-group">
                         <label class="col-md-4 control-label">Regular Price</label>
@@ -184,6 +177,15 @@
                     </div>
                 @endforeach
 
+                <label class="col-md-4 control-label">Description</label>
+                <div class="form-group">
+                        
+                        <div wire:ignore>
+                    <textarea class="form-control" id="description" placeholder="Description" wire:model="description"></textarea>
+                    @error('description') <span class="text-danger">{{$message}}</span> @enderror
+                    </div>
+                </div>
+
                 <div class="form-group">
                         <label class="col-md-4 control-label"></label>
                         <div class="col-md-4">
@@ -213,7 +215,9 @@
         });
 
         tinymce.init({
-            selector:'#description',
+            selector: 'textarea',
+            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
             setup:function(editor){
                 editor.on('change',function(e){
                     tinyMCE.triggerSave();

@@ -17,12 +17,12 @@ class HomeComponent extends Component
     {
         $sliders = HomeSlider::where('status',1)->get();
         $lproducts = Product::orderBy('created_at','DESC')->get()->take(8);
-        $category = HomeCategory::find(1);
+        $category = HomeCategory::findOrFail(1);
         $cats = explode(',',$category->sel_categories);
         $categories = Category::whereIn('id',$cats)->get();
         $no_of_products = $category->no_of_products;
         $sproducts = Product::where('sale_price','>',0)->inRandomOrder()->get()->take(8);
-        $sale = Sale::find(1);
+        $sale = Sale::findOrFail(1);
         if(Auth::check())
         {
             Cart::instance('cart')->restore(Auth::user()->email);

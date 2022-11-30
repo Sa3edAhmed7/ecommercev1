@@ -2,6 +2,7 @@
 
 use App\Http\Livewire\CartComponent;
 use App\Http\Livewire\HomeComponent;
+use App\Http\Livewire\PageComponent;
 use App\Http\Livewire\ShopComponent;
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\SearchComponent;
@@ -11,17 +12,21 @@ use App\Http\Livewire\SuccessComponent;
 use App\Http\Livewire\CategoryComponent;
 use App\Http\Livewire\CheckoutComponent;
 use App\Http\Livewire\WishlistComponent;
+use App\Http\Livewire\Admin\AdminPageComponent;
 use App\Http\Livewire\Admin\AdminSaleComponent;
 use App\Http\Livewire\User\UserOrdersComponent;
 use App\Http\Livewire\User\UserReviewComponent;
 use App\Http\Livewire\Admin\AdminOrderComponent;
 use App\Http\Livewire\User\UserProfileComponent;
+use App\Http\Livewire\Admin\AdminAddPageComponent;
 use App\Http\Livewire\Admin\AdminContactComponent;
 use App\Http\Livewire\Admin\AdminCouponsComponent;
+use App\Http\Livewire\Admin\AdminLinkAppComponent;
 use App\Http\Livewire\Admin\AdminProductComponent;
 use App\Http\Livewire\Admin\AdminSettingComponent;
 use App\Http\Livewire\User\UserDashboardComponent;
 use App\Http\Livewire\Admin\AdminCategoryComponent;
+use App\Http\Livewire\Admin\AdminEditPageComponent;
 use App\Http\Livewire\Admin\AdminAddCouponComponent;
 use App\Http\Livewire\Admin\AdminDashboardComponent;
 use App\Http\Livewire\User\UserEditProfileComponent;
@@ -40,6 +45,7 @@ use App\Http\Livewire\Admin\AdminAddAttributesComponent;
 use App\Http\Livewire\Admin\AdminAddHomeSliderComponent;
 use App\Http\Livewire\Admin\AdminEditAttributesComponent;
 use App\Http\Livewire\Admin\AdminEditHomeSliderComponent;
+use App\Http\Livewire\Admin\AdminAboutPaymentPageComponent;
 
 
 
@@ -58,13 +64,13 @@ use App\Http\Livewire\Admin\AdminEditHomeSliderComponent;
 //     return view('welcome');
 // });
 
-Route::get('/',HomeComponent::class);
+Route::get('/',HomeComponent::class)->name('index');;
 
 Route::get('/shop',ShopComponent::class)->name('product.shop');
 
 Route::get('/cart',CartComponent::class)->name('product.cart');
 
-Route::get('/checkout',CheckoutComponent::class);
+Route::get('/checkout',CheckoutComponent::class)->name('checkout');
 
 Route::get('/product/{slug}',DetailsComponent::class)->name('product.details');
 
@@ -75,7 +81,7 @@ Route::get('/wishlist',WishlistComponent::class)->name('product.wishlist');
 
 Route::get('/thank-you',SuccessComponent::class)->name('thankyou');
 Route::get('/contact-us',ContactComponent::class)->name('contact');
-
+Route::get('/{title}',PageComponent::class)->name('page');
 
 
 // Route::middleware([
@@ -112,6 +118,11 @@ Route::middleware(['auth:sanctum','verified','authadmin'])->group(function () {
     Route::get('/admin/product/add',AdminAddProductComponent::class)->name('admin.addproduct');
     Route::get('/admin/product/edit/{product_slug}',AdminEditProductComponent::class)->name('admin.editproduct');
 
+
+    Route::get('/admin/pages',AdminPageComponent::class)->name('admin.pages');
+    Route::get('/admin/page/add',AdminAddPageComponent::class)->name('admin.addpage');
+    Route::get('/admin/page/edit/{title}',AdminEditPageComponent::class)->name('admin.editpage');
+
     Route::get('/admin/slider',AdminHomeSliderComponent::class)->name('admin.homeslider');
     Route::get('/admin/slider/add',AdminAddHomeSliderComponent::class)->name('admin.addhomeslider');
     Route::get('/admin/slider/edit/{slide_id}',AdminEditHomeSliderComponent::class)->name('admin.edithomeslider');
@@ -131,7 +142,8 @@ Route::middleware(['auth:sanctum','verified','authadmin'])->group(function () {
     Route::get('/admin/contact-us',AdminContactComponent::class)->name('admin.contact');
 
     Route::get('/admin/settings',AdminSettingComponent::class)->name('admin.settings');
-
+    Route::get('/admin/aboutpayment',AdminAboutPaymentPageComponent::class)->name('admin.aboutpayment');
+    Route::get('/admin/linkapp',AdminLinkAppComponent::class)->name('admin.linkapp');
 
     Route::get('/admin/attributes',AdminAttributesComponent::class)->name('admin.attributes');
     Route::get('/admin/attributes/add',AdminAddAttributesComponent::class)->name('admin.add_attribute');

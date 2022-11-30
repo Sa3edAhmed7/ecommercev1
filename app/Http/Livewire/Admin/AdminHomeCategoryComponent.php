@@ -17,9 +17,19 @@ class AdminHomeCategoryComponent extends Component
         $this->selected_categories = explode(',',$category->sel_categories);
         $this->numberofproducts = $category->no_of_products;
     }
-
+    public function updated($fields)
+    {
+        $this->validateOnly($fields,[
+            'sel_categories' => 'required',
+            'no_of_products' =>  'required',
+        ]);
+    }
     public function updateHomeCategory()
     {
+        $this->validate([
+            'sel_categories' => 'required',
+            'no_of_products' =>  'required',
+        ]);
         $category = HomeCategory::find(1);
         $category->sel_categories = implode(',',$this->selected_categories);
         $category->no_of_products = $this->numberofproducts;

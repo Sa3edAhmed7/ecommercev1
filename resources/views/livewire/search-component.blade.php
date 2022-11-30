@@ -14,12 +14,6 @@
 
         <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12 main-content-area">
 
-            <div class="banner-shop">
-                <a href="#" class="banner-link">
-                    <figure><img src="{{asset('assets')}}/images/shop-banner.jpg" alt=""></figure>
-                </a>
-            </div>
-
             <div class="wrap-shop-control">
 
                 <h1 class="shop-title">Digital & Electronics</h1>
@@ -46,12 +40,6 @@
                             <option value="32">32 per page</option>
                         </select>
                     </div>
-
-                    <div class="change-display-mode">
-                        <a href="#" class="grid-mode display-mode active"><i class="fa fa-th"></i>Grid</a>
-                        <a href="list.html" class="list-mode display-mode"><i class="fa fa-th-list"></i>List</a>
-                    </div>
-
                 </div>
 
             </div><!--end wrap shop control-->

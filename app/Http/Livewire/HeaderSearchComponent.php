@@ -1,9 +1,8 @@
 <?php
 
 namespace App\Http\Livewire;
-
-use App\Models\Category;
 use Livewire\Component;
+use App\Models\Category;
 
 class HeaderSearchComponent extends Component
 {

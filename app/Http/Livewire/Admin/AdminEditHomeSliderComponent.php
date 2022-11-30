@@ -19,6 +19,18 @@ class AdminEditHomeSliderComponent extends Component
     public $newimage;
     public $slider_id;
 
+    public function updated($fields)
+    {
+        $this->validateOnly($fields,[
+            'title' => 'required',
+            'subtitle' =>  'required',
+            'price' =>  'required',
+            'link' =>  'required',
+            'image' =>  'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'status' =>  'required',
+        ]);
+    }
+
     public function mount($slide_id)
     {
         $slider = HomeSlider::findOrFail($slide_id);
@@ -33,6 +45,14 @@ class AdminEditHomeSliderComponent extends Component
 
     public function updateSlider()
     {
+        $this->validate([
+            'title' => 'required',
+            'subtitle' =>  'required',
+            'price' =>  'required',
+            'link' =>  'required',
+            'image' =>  'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'status' =>  'required',
+        ]);
         $slider = HomeSlider::findOrFail($this->slider_id);
         $slider->title = $this->title;
         $slider->subtitle = $this->subtitle;

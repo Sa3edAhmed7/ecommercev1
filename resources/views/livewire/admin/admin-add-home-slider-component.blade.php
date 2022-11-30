@@ -21,7 +21,7 @@
                     @endif
                     <form class="form-horizontal" wire:submit.prevent="storeSlider">
                     
-                        <div class="form-group">
+                    <div class="form-group">
                         <label class="col-md-4 control-label">Title</label>
                         <div class="col-md-4">
                     <input type="text" placeholder="Title" class="form-control input-md" wire:model="title" />

@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 use Carbon\Carbon;
-use App\Models\Setting;
-use App\Models\HomeCategory;
 use App\Models\Sale;
+use App\Models\LinkApp;
+use App\Models\Setting;
+use App\Models\AboutPayment;
+use App\Models\HomeCategory;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -60,6 +62,24 @@ class AppServiceProvider extends ServiceProvider
         ]);
         });
         view()->share('sale', $sale);
+
+
+        $aboutpay = AboutPayment::firstOr(function () {
+            return AboutPayment::create([
+            'freeshipping' => '100',
+            'guarantee' => '15',
+        ]);
+        });
+        view()->share('aboutpay', $aboutpay);
+
+
+        $linkapp = LinkApp::firstOr(function () {
+            return LinkApp::create([
+            'googleplay' => 'https://play.google.com/store/games',
+            'appstore' => 'https://www.apple.com/app-store/',
+        ]);
+        });
+        view()->share('linkapp', $linkapp);
 
         }
     }

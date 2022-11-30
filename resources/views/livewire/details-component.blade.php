@@ -74,10 +74,6 @@
                             <div class="short-desc">
                                 {!! $product->short_description !!}
                             </div>
-                            <div class="wrap-social">
-                                <a class="link-socail" href="#"><img src="{{asset('assets')}}/images/social-list.png"
-                                alt=""></a>
-                            </div>
                             @if($product->sale_price > 0 && $sale->status == 1 && $sale->sale_date >
                             Carbon\Carbon::now())
                             <div class="wrap-price">
@@ -225,7 +221,7 @@
                                                 <li class="comment byuser comment-author-admin bypostauthor even thread-even depth-1"
                                                     id="li-comment-20">
                                                     <div id="comment-20" class="comment_container">
-                                                        <img alt="{{$orderItem->order->user->name}}" src="{{asset('assets')}}/images/profile/{{$orderItem->order->user->profile->image}}"
+                                                        <img alt="{{$orderItem->order->user->name}}" src="{{asset('assets')}}/images/profile/{{$orderItem->order->user->profile->image}}" style="border-radius:50%;height:80px"
                                                             height="80" width="80">
                                                         <div class="comment-text">
                                                             <div class="star-rating">
@@ -265,34 +261,31 @@
                             <ul class="our-services">
 
                                 <li class="service">
-                                    <a class="link-to-service" href="#">
+                                    <a class="link-to-service">
                                         <i class="fa fa-truck" aria-hidden="true"></i>
                                         <div class="right-content">
                                             <b class="title">Free Shipping</b>
-                                            <span class="subtitle">On Oder Over $99</span>
-                                            <p class="desc">Lorem Ipsum is simply dummy text of the printing...</p>
+                                            <span class="subtitle">On Oder Over ${{$aboutpay->freeshipping}}</span>
                                         </div>
                                     </a>
                                 </li>
 
                                 <li class="service">
-                                    <a class="link-to-service" href="#">
+                                    <a class="link-to-service" href="{{route('product.shop')}}">
                                         <i class="fa fa-gift" aria-hidden="true"></i>
                                         <div class="right-content">
                                             <b class="title">Special Offer</b>
-                                            <span class="subtitle">Get a gift!</span>
-                                            <p class="desc">Lorem Ipsum is simply dummy text of the printing...</p>
+                                            <span class="subtitle">Get a shop!</span>
                                         </div>
                                     </a>
                                 </li>
 
                                 <li class="service">
-                                    <a class="link-to-service" href="#">
+                                    <a class="link-to-service">
                                         <i class="fa fa-reply" aria-hidden="true"></i>
                                         <div class="right-content">
                                             <b class="title">Order Return</b>
-                                            <span class="subtitle">Return within 7 days</span>
-                                            <p class="desc">Lorem Ipsum is simply dummy text of the printing...</p>
+                                            <span class="subtitle">Return within {{$aboutpay->guarantee}} days</span>
                                         </div>
                                     </a>
                                 </li>
