@@ -38,15 +38,16 @@ class UserReviewComponent extends Component
         $review->order_item_id = $this->order_item_id;
         $review->save();
 
-        $orderItem = OrderItem::find($this->order_item_id);
+        $orderItem = OrderItem::findOrFail($this->order_item_id);
         $orderItem->rstatus = true;
         $orderItem->save();
         session()->flash('mssage','Your review has been added successfully!');
+        return redirect()->route('user.orders');
     }
 
     public function render()
     {
-        $orderItem = OrderItem::find($this->order_item_id);
+        $orderItem = OrderItem::findOrFail($this->order_item_id);
         return view('livewire.user.user-review-component',['orderItem'=>$orderItem])->layout('layouts.base');
     }
 }

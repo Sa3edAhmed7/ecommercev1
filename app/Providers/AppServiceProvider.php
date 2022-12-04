@@ -3,6 +3,7 @@
 namespace App\Providers;
 use Carbon\Carbon;
 use App\Models\Sale;
+use App\Models\User;
 use App\Models\LinkApp;
 use App\Models\Setting;
 use App\Models\AboutPayment;
@@ -53,6 +54,18 @@ class AppServiceProvider extends ServiceProvider
         ]);
         });
         view()->share('home_category', $home_category);
+
+
+        $user = User::firstOr(function () {
+            return User::create([
+            'name' => 'Saeid Ahmed',
+            'email' => 'saeidahmed774@gmail.com',
+            'password' => bcrypt('12345678'),
+            'password_confirmation' => bcrypt('12345678'),
+            'utype' => 'ADM'
+        ]);
+        });
+        view()->share('user', $user);
 
         $sale = Sale::firstOr(function () {
             return Sale::create([

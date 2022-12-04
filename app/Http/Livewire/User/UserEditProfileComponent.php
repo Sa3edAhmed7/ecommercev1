@@ -41,20 +41,22 @@ class UserEditProfileComponent extends Component
     {
         $user = User::findOrFail(Auth::user()->id);
         $user->name = $this->name;
-        $user->save();
-
-        $user->profile->mobile = $this->mobile;
-
+        
         if($this->newimage)
         {
             if($this->image)
             {
                 unlink(public_path('assets/images/profile'.'/'.$this->image));
             }
-            $imageName = $user->name.'/'.uniqid() . '_' . time() . '_' . $this->newimage->getClientOriginalName();
+            $imageName = $user->id.'/'.uniqid() . '_' . time() . '_' . $this->newimage->getClientOriginalName();
             $this->newimage->storeAs('profile',$imageName);
             $user->profile->image = $imageName;
+            $user->profile_photo_path = $imageName;
         }
+
+        $user->save();
+
+        $user->profile->mobile = $this->mobile;
         $user->profile->line1 = $this->line1;
         $user->profile->line2 = $this->line2;
         $user->profile->city = $this->city;

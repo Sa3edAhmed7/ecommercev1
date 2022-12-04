@@ -92,8 +92,17 @@
 									<div class="item-content">
 										<div class="wrap-vertical-nav">
 											<ul>
+											@if(Route::has('login'))
+												@auth
+												@if(Auth::user()->utype === 'ADM')
+												<li class="menu-item"><a href="{{ route('admin.profile') }}" class="link-term">My Profile</a></li>
+												<li class="menu-item"><a href="{{route('product.wishlist')}}" class="link-term">Wishlist</a></li>
+												@endif
+												@else
 												<li class="menu-item"><a href="{{ route('user.profile') }}" class="link-term">My Profile</a></li>
 												<li class="menu-item"><a href="{{route('product.wishlist')}}" class="link-term">Wishlist</a></li>
+												@endif
+												@endif
 											</ul>
 										</div>
 									</div>

@@ -8,9 +8,9 @@
             <div class="panel-body">
                 <div class="col-md-4">
                     @if($user->profile->image)
-                    <img src="{{asset('assets/images/profile')}}/{{$user->profile->image}}" width="100%" />
+                    <img src="{{asset('assets/images/profile')}}/{{$user->profile->image}}" style="height: auto; border-radius: 10%; margin-left: 25%;" width="50%" />
                     @else
-                    <img src="{{asset('assets/images/profile/defualt.png')}}" width="100%" />
+                    <img src="{{asset('assets/images/profile/defualt.png')}}" style="height: auto; border-radius: 10%; margin-left: 25%;" width="50%" />
                     @endif
                 </div>
                 <div class="col-md-8">

@@ -63,6 +63,9 @@
 												<a title="Dashboard" href="{{ route('admin.dashboard') }}">Dashboard</a>
 											</li>
 											<li class="menu-item">
+												<a title="My Profile" href="{{ route('admin.profile') }}">My Profile</a>
+											</li>
+											<li class="menu-item">
 											<a title="Categories" href="{{ route('admin.categories') }}">Categories</a>
 											</li>
 											<li class="menu-item">
@@ -98,6 +101,15 @@
 											<li class="menu-item">
 												<a title="Settings" href="{{ route('admin.settings') }}">Settings</a>
 											</li>
+
+											<li class="menu-item">
+												<a title="Change Pasword" href="{{ route('admin.changepassword') }}">Change Pasword</a>
+											</li>
+
+											<li class="menu-item">
+												<a title="All Users" href="{{ route('admin.users') }}">All Users</a>
+											</li>
+
 											<li class="menu-item">
 												<a title="AboutPayment" href="{{ route('admin.aboutpayment') }}">AboutPayment</a>
 											</li>

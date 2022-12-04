@@ -19,14 +19,17 @@ use App\Http\Livewire\User\UserReviewComponent;
 use App\Http\Livewire\Admin\AdminOrderComponent;
 use App\Http\Livewire\User\UserProfileComponent;
 use App\Http\Livewire\Admin\AdminAddPageComponent;
+use App\Http\Livewire\Admin\AdminAddUserComponent;
 use App\Http\Livewire\Admin\AdminContactComponent;
 use App\Http\Livewire\Admin\AdminCouponsComponent;
 use App\Http\Livewire\Admin\AdminLinkAppComponent;
 use App\Http\Livewire\Admin\AdminProductComponent;
+use App\Http\Livewire\Admin\AdminProfileComponent;
 use App\Http\Livewire\Admin\AdminSettingComponent;
 use App\Http\Livewire\User\UserDashboardComponent;
 use App\Http\Livewire\Admin\AdminCategoryComponent;
 use App\Http\Livewire\Admin\AdminEditPageComponent;
+use App\Http\Livewire\Admin\AdminEditUserComponent;
 use App\Http\Livewire\Admin\AdminAddCouponComponent;
 use App\Http\Livewire\Admin\AdminDashboardComponent;
 use App\Http\Livewire\User\UserEditProfileComponent;
@@ -37,12 +40,15 @@ use App\Http\Livewire\Admin\AdminHomeSliderComponent;
 use App\Http\Livewire\User\UserOrderDetailsComponent;
 use App\Http\Livewire\Admin\AdminAddCategoryComponent;
 use App\Http\Livewire\Admin\AdminEditProductComponent;
+use App\Http\Livewire\Admin\AdminEditProfileComponent;
+use App\Http\Livewire\Admin\AdminSettingUserComponent;
 use App\Http\Livewire\Admin\AdminEditCategoryComponent;
 use App\Http\Livewire\Admin\AdminHomeCategoryComponent;
 use App\Http\Livewire\Admin\AdminOrderDetailsComponent;
 use App\Http\Livewire\User\UserChangePasswordComponent;
 use App\Http\Livewire\Admin\AdminAddAttributesComponent;
 use App\Http\Livewire\Admin\AdminAddHomeSliderComponent;
+use App\Http\Livewire\Admin\AdminChangePasswordComponent;
 use App\Http\Livewire\Admin\AdminEditAttributesComponent;
 use App\Http\Livewire\Admin\AdminEditHomeSliderComponent;
 use App\Http\Livewire\Admin\AdminAboutPaymentPageComponent;
@@ -64,7 +70,7 @@ use App\Http\Livewire\Admin\AdminAboutPaymentPageComponent;
 //     return view('welcome');
 // });
 
-Route::get('/',HomeComponent::class)->name('index');;
+Route::get('/',HomeComponent::class)->name('index');
 
 Route::get('/shop',ShopComponent::class)->name('product.shop');
 
@@ -110,6 +116,10 @@ Route::middleware(['auth:sanctum','verified'])->group(function () {
 Route::middleware(['auth:sanctum','verified','authadmin'])->group(function () {
     Route::get('/admin/dashboard',AdminDashboardComponent::class)->name('admin.dashboard');
 
+    Route::get('/admin/users',AdminSettingUserComponent::class)->name('admin.users');
+    Route::get('/admin/user/add',AdminAddUserComponent::class)->name('admin.adduser');
+    Route::get('/admin/user/edit/{user_id}',AdminEditUserComponent::class)->name('admin.edituser');
+
     Route::get('/admin/categories',AdminCategoryComponent::class)->name('admin.categories');
     Route::get('/admin/category/add',AdminAddCategoryComponent::class)->name('admin.addcategory');
     Route::get('/admin/category/edit/{category_slug}/{scategory_slug?}',AdminEditCategoryComponent::class)->name('admin.editcategory');
@@ -148,5 +158,11 @@ Route::middleware(['auth:sanctum','verified','authadmin'])->group(function () {
     Route::get('/admin/attributes',AdminAttributesComponent::class)->name('admin.attributes');
     Route::get('/admin/attributes/add',AdminAddAttributesComponent::class)->name('admin.add_attribute');
     Route::get('/admin/attributes/edit/{attribute_id}',AdminEditAttributesComponent::class)->name('admin.edit_attribute');
+
+
+    Route::get('/admin/profile',AdminProfileComponent::class)->name('admin.profile');
+    Route::get('/admin/profile/edit',AdminEditProfileComponent::class)->name('admin.editprofile');
+
+    Route::get('/admin/change-password',AdminChangePasswordComponent::class)->name('admin.changepassword');
 
 });
