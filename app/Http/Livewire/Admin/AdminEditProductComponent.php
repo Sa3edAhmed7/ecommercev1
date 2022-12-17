@@ -99,11 +99,23 @@ class AdminEditProductComponent extends Component
             'stock_status' =>  'required',
             'featured' =>  'required',
             'quantity' =>  'required',
-            'image' =>  'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'images' => 'required|array',
-            'images.*' => 'mimes:jpeg,png,jpg,gif,svg',
             'category_id' =>  'required',
         ]);
+        
+        if($this->newimage)
+        {
+            $this->validateOnly($fields,[
+            'newimage' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
+        }
+
+        if($this->newimages)
+        {
+            $this->validateOnly($fields,[
+            'newimages' => 'required|array',
+            'newimages.*' => 'mimes:jpeg,png,jpg,gif,svg',
+            ]);
+        }
     }
 
     public function updateProduct()
@@ -119,11 +131,24 @@ class AdminEditProductComponent extends Component
             'stock_status' =>  'required',
             'featured' =>  'required',
             'quantity' =>  'required',
-            'image' =>  'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'images' => 'required|array',
-            'images.*' => 'mimes:jpeg,png,jpg,gif,svg',
             'category_id' =>  'required',
         ]);
+        
+        if($this->newimage)
+        {
+            $this->validateOnly($fields,[
+            'newimage' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
+        }
+
+        if($this->newimages)
+        {
+            $this->validateOnly($fields,[
+            'newimages' => 'required|array',
+            'newimages.*' => 'mimes:jpeg,png,jpg,gif,svg',
+            ]);
+        }
+        
         $product = Product::findOrFail($this->product_id);
         $product->name = $this->name;
         $product->slug = $this->slug;
