@@ -136,14 +136,14 @@ class AdminEditProductComponent extends Component
         
         if($this->newimage)
         {
-            $this->validateOnly($fields,[
+            $this->validate([
             'newimage' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
         }
 
         if($this->newimages)
         {
-            $this->validateOnly($fields,[
+            $this->validate([
             'newimages' => 'required|array',
             'newimages.*' => 'mimes:jpeg,png,jpg,gif,svg',
             ]);
