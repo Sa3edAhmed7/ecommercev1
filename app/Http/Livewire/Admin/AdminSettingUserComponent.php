@@ -4,12 +4,11 @@ namespace App\Http\Livewire\Admin;
 
 use App\Models\User;
 use Livewire\Component;
-use Livewire\WithPagination;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class AdminSettingUserComponent extends Component
 {
-    use WithPagination;
-    public $searchTearm;
 
     public function deleteUser($id)
     {
@@ -19,18 +18,19 @@ class AdminSettingUserComponent extends Component
             unlink(public_path('assets/images/profile'.'/'.$users->image));
         }
             User::where('id', $users->id)->delete();
-        session()->flash('success_message','User has been deleted successfully!');
+
+
+        $user = User::findOrFail(Auth::user()->id)->first();
+        $delete_user = User::latest()->first();
+        Notification::send($user, new \App\Notifications\Delete_User($delete_user));
+        session()->flash('delete_message','User has been deleted successfully!');
+        return redirect(route('admin.users'));
     }
 
-        
+
     public function render()
     {
-        $search = '%' . $this->searchTearm . '%';
-        $users = User::where('name','LIKE',$search)
-        ->orWhere('email','LIKE',$search)
-        ->orWhere('utype','LIKE',$search)
-        ->orWhere('id','LIKE',$search)
-        ->orderBy('id','DESC')->paginate(10);
-        return view('livewire.admin.admin-setting-user-component',['users'=>$users])->layout('layouts.base');
+        $users = User::all();
+        return view('livewire.admin.admin-setting-user-component',['users'=>$users])->layout('layouts.master');
     }
 }

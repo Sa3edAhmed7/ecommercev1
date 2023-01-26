@@ -1,0 +1,36 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+use App\Models\User;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+class CreateAdminUserSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        $user = User::create([
+            'name' => 'Saeid Ahmed',
+            'email' => 'saeidahmed774@gmail.com',
+            'password' => bcrypt('12345678'),
+            'password_confirmation' => bcrypt('12345678'),
+            'utype' => "SADM",
+            'role' => "SADM",
+            ]);
+
+            $role = Role::create(['name' => 'SADM']);
+
+            $permissions = Permission::pluck('id','id')->all();
+
+            $role->syncPermissions($permissions);
+
+            $user->assignRole([$role->id]);
+    }
+}

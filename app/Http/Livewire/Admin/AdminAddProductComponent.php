@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Admin;
 
 
+use App\Models\User;
 use App\Models\Product;
 use Livewire\Component;
 use App\Models\Category;
@@ -11,6 +12,8 @@ use Illuminate\Support\Str;
 use Livewire\WithFileUploads;
 use App\Models\AttributeValue;
 use App\Models\ProductAttribute;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class AdminAddProductComponent extends Component
 {
@@ -35,7 +38,7 @@ class AdminAddProductComponent extends Component
     public $inputs = [];
     public $attribute_arr = [];
     public $attribute_values;
-    
+
     public function mount()
     {
         $this->stock_status = 'instock';
@@ -46,20 +49,34 @@ class AdminAddProductComponent extends Component
     {
         $this->validateOnly($fields,[
             'name' => 'required',
-            'slug' =>  'required|unique:products',
+            'slug' =>  'required',
             'short_description' =>  'required',
             'description' =>  'required',
-            'regular_price' =>  'required',
-            'sale_price' =>  'required',
+            'regular_price' =>  'required|numeric',
+            'sale_price' =>  'numeric',
             'SKU' =>  'required',
             'stock_status' =>  'required',
             'featured' =>  'required',
-            'quantity' =>  'required',
-            'image' =>  'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'images' => 'required|array',
-            'images.*' => 'mimes:jpeg,png,jpg,gif,svg',
+            'quantity' =>  'required|numeric',
             'category_id' =>  'required',
+            'attr' => 'required',
+            'attribute_values' => 'required',
         ]);
+
+        if($this->image)
+        {
+            $this->validateOnly($fields,[
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            ]);
+        }
+
+        if($this->images)
+        {
+            $this->validateOnly($fields,[
+            'images' => 'required|array',
+            'images.*' => 'mimes:jpeg,png,jpg,gif,svg,webp',
+            ]);
+        }
     }
 
     public function add()
@@ -70,7 +87,7 @@ class AdminAddProductComponent extends Component
             array_push($this->attribute_arr,$this->attr);
         }
     }
-    
+
     public function generateslug()
     {
         $this->slug = Str::slug($this->name,'-');
@@ -80,20 +97,35 @@ class AdminAddProductComponent extends Component
     {
         $this->validate([
             'name' => 'required',
-            'slug' =>  'required|unique:products',
+            'slug' =>  'required',
             'short_description' =>  'required',
             'description' =>  'required',
-            'regular_price' =>  'required',
-            'sale_price' =>  'required',
+            'regular_price' =>  'required|numeric',
+            'sale_price' =>  'numeric',
             'SKU' =>  'required',
             'stock_status' =>  'required',
             'featured' =>  'required',
-            'quantity' =>  'required',
-            'image' =>  'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'quantity' =>  'required|numeric',
+            'category_id' =>  'required',
+            'attr' => 'required',
+            'attribute_values' => 'required',
+        ]);
+
+        if($this->image)
+        {
+            $this->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
+        }
+
+        if($this->images)
+        {
+            $this->validate([
             'images' => 'required|array',
             'images.*' => 'mimes:jpeg,png,jpg,gif,svg',
-            'category_id' =>  'required',
-        ]);
+            ]);
+        }
+
         $product = new Product();
         $product->name = $this->name;
         $product->slug = $this->slug;
@@ -105,9 +137,14 @@ class AdminAddProductComponent extends Component
         $product->stock_status = $this->stock_status;
         $product->featured = $this->featured;
         $product->quantity = $this->quantity;
-        $imageName = $product->name.'/'.uniqid() . '_' . time() . '_' . $this->image->getClientOriginalName();
-        $this->image->storeAs('products',$imageName);
-        $product->image = $imageName;
+
+        if($this->image)
+        {
+            $imageName = $product->name.'/'.uniqid() . '_' . time() . '_' . $this->image->getClientOriginalName();
+            $this->image->storeAs('products',$imageName);
+            $product->image = $imageName;
+        }
+
 
         if($this->images)
         {
@@ -118,7 +155,7 @@ class AdminAddProductComponent extends Component
                 $image->storeAs('products',$imgName);
                 $imagesName = $imagesName . ',' . $imgName;
             }
-            
+
             $product->images = $imagesName;
         }
         $product->category_id = $this->category_id;
@@ -126,34 +163,40 @@ class AdminAddProductComponent extends Component
         {
             $product->subcategory_id = $this->scategory_id;
         }
-        $product->save();
+            $product->save();
 
-        foreach($this->attribute_values as $key=>$attribute_value)
-        {
-            $avalues = explode(",",$attribute_value);
-            foreach($avalues as $avalue)
+            foreach($this->attribute_values as $key=>$attribute_value)
             {
-                $attr_value = new AttributeValue();
-                $attr_value->product_attribute_id = $key;
-                $attr_value->value = $avalue;
-                $attr_value->product_id = $product->id;
-                $attr_value->save();
+                $avalues = explode(",",$attribute_value);
+                foreach($avalues as $avalue)
+                {
+                    $attr_value = new AttributeValue();
+                    $attr_value->product_attribute_id = $key;
+                    $attr_value->value = $avalue;
+                    $attr_value->product_id = $product->id;
+                    $attr_value->save();
+                }
             }
-        }
-        session()->flash('success_message','Product has been created successfully!');
+
+
+            $user = User::findOrFail(Auth::user()->id)->first();
+            $add_product = Product::latest()->first();
+            Notification::send($user, new \App\Notifications\Add_Product($add_product));
+
+        return redirect(route('admin.products'))->with(session()->flash('success_message','Product has been created successfully!'));
     }
 
     public function changeSubcategory()
     {
         $this->scategory_id = 0;
     }
-    
+
     public function render()
     {
         $categories = Category::all();
         $scategories = Subcategory::where('category_id',$this->category_id)->get();
 
         $pattributes = ProductAttribute::all();
-        return view('livewire.admin.admin-add-product-component',['categories'=>$categories,'scategories'=>$scategories,'pattributes'=>$pattributes])->layout('layouts.base');
+        return view('livewire.admin.admin-add-product-component',['categories'=>$categories,'scategories'=>$scategories,'pattributes'=>$pattributes])->layout('layouts.master');
     }
 }

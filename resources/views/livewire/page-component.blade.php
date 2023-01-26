@@ -13,7 +13,7 @@
     <div class="col-lg-12">
         <div class="card card-danger card-outline">
             <div class="card-body">
-            <div class="form-group">
+            <div class="form-group" style="over-flow-y:scroll;scrollbar-width:none;">
             <div>{!!$page['content']!!}</div>
             </div>
             </div>

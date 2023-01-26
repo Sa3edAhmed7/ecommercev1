@@ -3,9 +3,11 @@
 namespace App\Http\Livewire\Admin;
 
 use App\Models\User;
+use App\Models\Profile;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class AdminEditProfileComponent extends Component
 {
@@ -41,7 +43,7 @@ class AdminEditProfileComponent extends Component
     {
         $user = User::findOrFail(Auth::user()->id);
         $user->name = $this->name;
-        
+
         if($this->newimage)
         {
             if($this->image)
@@ -64,11 +66,15 @@ class AdminEditProfileComponent extends Component
         $user->profile->country = $this->country;
         $user->profile->zipcode = $this->zipcode;
         $user->profile->save();
+
+        $users = User::findOrFail(Auth::user()->id)->first();
+        $update_profile = Profile::latest()->first();
+        Notification::send($users, new \App\Notifications\Update_Profile($update_profile));
         session()->flash('message','Profile has been updated successfully!');
     }
 
     public function render()
     {
-        return view('livewire.admin.admin-edit-profile-component')->layout('layouts.base');
+        return view('livewire.admin.admin-edit-profile-component')->layout('layouts.master');
     }
 }

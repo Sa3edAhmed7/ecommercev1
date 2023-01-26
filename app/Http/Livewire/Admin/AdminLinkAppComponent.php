@@ -2,8 +2,11 @@
 
 namespace App\Http\Livewire\Admin;
 
+use App\Models\User;
 use App\Models\LinkApp;
 use Livewire\Component;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class AdminLinkAppComponent extends Component
 {
@@ -43,10 +46,15 @@ class AdminLinkAppComponent extends Component
             $linkapp->googleplay = $this->googleplay;
             $linkapp->appstore = $this->appstore;
             $linkapp->save();
+
+
+            $user = User::findOrFail(Auth::user()->id)->first();
+            $link_app = LinkApp::latest()->first();
+            Notification::send($user, new \App\Notifications\Links_App($link_app));
             session()->flash('message','LinkApp has been saved successfully!');
     }
     public function render()
     {
-        return view('livewire.admin.admin-link-app-component')->layout('layouts.base');
+        return view('livewire.admin.admin-link-app-component')->layout('layouts.master');
     }
 }

@@ -2,8 +2,11 @@
 
 namespace App\Http\Livewire\Admin;
 
+use App\Models\User;
 use App\Models\Setting;
 use Livewire\Component;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class AdminSettingComponent extends Component
 {
@@ -48,7 +51,7 @@ class AdminSettingComponent extends Component
             'facebook' => 'required',
             'pinterest' => 'required',
             'instagram' => 'required',
-            'youtube' => 'required'
+            'youtube' => 'required',
         ]);
     }
 
@@ -64,7 +67,7 @@ class AdminSettingComponent extends Component
             'facebook' => 'required',
             'pinterest' => 'required',
             'instagram' => 'required',
-            'youtube' => 'required'
+            'youtube' => 'required',
         ]);
 
         $setting = Setting::find(1);
@@ -83,11 +86,18 @@ class AdminSettingComponent extends Component
             $setting->instagram = $this->instagram;
             $setting->youtube = $this->youtube;
             $setting->save();
+
+            $user = User::findOrFail(Auth::user()->id)->first();
+            $settings_web = Setting::latest()->first();
+            Notification::send($user, new \App\Notifications\Settings_Web($settings_web));
             session()->flash('message','Settings has been saved successfully!');
+            return redirect(route('admin.settings'));
     }
 
     public function render()
     {
-        return view('livewire.admin.admin-setting-component')->layout('layouts.base');
+        $setting = Setting::find(1);
+        $user = User::find(Auth::id());
+        return view('livewire.admin.admin-setting-component',['setting'=>$setting,'user'=>$user])->layout('layouts.master');
     }
 }

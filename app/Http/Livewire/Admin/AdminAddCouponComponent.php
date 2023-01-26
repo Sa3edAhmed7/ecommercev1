@@ -2,8 +2,11 @@
 
 namespace App\Http\Livewire\Admin;
 
+use App\Models\User;
 use App\Models\Coupon;
 use Livewire\Component;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class AdminAddCouponComponent extends Component
 {
@@ -39,10 +42,15 @@ class AdminAddCouponComponent extends Component
         $coupon->cart_value = $this->cart_value;
         $coupon->expiry_date = $this->expiry_date;
         $coupon->save();
+
+
+        $user = User::findOrFail(Auth::user()->id)->first();
+        $add_coupon = Coupon::latest()->first();
+        Notification::send($user, new \App\Notifications\Add_Coupon($add_coupon));
         session()->flash('success_message','Coupon has been created successfully!');
     }
     public function render()
     {
-        return view('livewire.admin.admin-add-coupon-component')->layout('layouts.base');
+        return view('livewire.admin.admin-add-coupon-component')->layout('layouts.master');
     }
 }

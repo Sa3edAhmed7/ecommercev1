@@ -22,6 +22,25 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.css" integrity="sha512-KRrxEp/6rgIme11XXeYvYRYY/x6XPGwk0RsIC6PyMRc072vj2tcjBzFmn939xzjeDhj0aDO7TDMd7Rbz3OEuBQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.js" integrity="sha512-EnXkkBUGl2gBm/EIZEgwWpQNavsnBbeMtjklwAa7jLj60mJk932aqzXFmdPKCG6ge/i8iOCK0Uwl1Qp+S0zowg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+	<style>
+        ::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+        border-radius: 50px !important
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #ffffff
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: #ff2832
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      background: #555
+    }
+    </style>
 	
     @livewireStyles
 </head>
@@ -55,7 +74,7 @@
 								</li>
 								@if(Route::has('login'))
 								@auth
-								@if(Auth::user()->utype === 'ADM')
+								@if(Auth::user()->utype === 'SADM')
 									<li class="menu-item menu-item-has-children parent" >
 										<a title="My Account" href="#">My Account ({{ Auth::user()->name }})<i class="fa fa-angle-down" aria-hidden="true"></i></a>
 										<ul class="submenu curency" >
@@ -126,6 +145,25 @@
 										</form>
 										</ul>
 									</li>
+									@elseif(Auth::user()->utype === 'ADM')
+									<li class="menu-item menu-item-has-children parent" >
+										<a title="My Account" href="#">My Account ({{ Auth::user()->name }})<i class="fa fa-angle-down" aria-hidden="true"></i></a>
+										<ul class="submenu curency" >
+											<li class="menu-item" >
+												<a title="Dashboard" href="{{ route('admin.dashboard') }}">Dashboard</a>
+											</li>
+											<li class="menu-item">
+												<a title="My Profile" href="{{ route('admin.profile') }}">My Profile</a>
+											</li>
+
+											<form method="POST" action="{{ route('logout') }}">
+                                    		@csrf
+											<li class="menu-item" >
+                                    		<a href="{{ route('logout') }}"onclick="event.preventDefault(); this.closest('form').submit();">Logout</a>
+                                			</li>
+										</form>
+										</ul>
+									</li>
 								@else
 									<li class="menu-item menu-item-has-children parent" >
 											<a title="My Account" href="#">My Account ({{ Auth::user()->name }})<i class="fa fa-angle-down" aria-hidden="true"></i></a>
@@ -135,9 +173,6 @@
 												</li>
 												<li class="menu-item">
 												<a title="My Orders" href="{{ route('user.orders') }}">My Orders</a>
-											</li>
-											<li class="menu-item">
-												<a title="My Profile" href="{{ route('user.profile') }}">My Profile</a>
 											</li>
 											<li class="menu-item">
 												<a title="Change Pasword" href="{{ route('user.changepassword') }}">Change Pasword</a>
@@ -201,8 +236,6 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js" integrity="sha512-GDey37RZAxFkpFeJorEUwNoIbkTwsyC736KNSYucu1WJWFK9qTdzYub8ATxktr6Dwke7nbFaioypzbDOQykoRg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.js" integrity="sha512-EnXkkBUGl2gBm/EIZEgwWpQNavsnBbeMtjklwAa7jLj60mJk932aqzXFmdPKCG6ge/i8iOCK0Uwl1Qp+S0zowg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-	<script src="https://cdn.tiny.cloud/1/q49nzqhhac1g2vljd07n2ngq1ps81nsflh401f8j3m3v86vq/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 
     @livewireScripts
 

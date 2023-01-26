@@ -2,10 +2,13 @@
 
 namespace App\Http\Livewire\Admin;
 
+use App\Models\User;
 use Livewire\Component;
 use App\Models\Category;
 use App\Models\Subcategory;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class AdminEditCategoryComponent extends Component
 {
@@ -69,6 +72,10 @@ class AdminEditCategoryComponent extends Component
             $category->name = $this->name;
             $category->slug = $this->slug;
             $category->save();
+
+            $user = User::findOrFail(Auth::user()->id)->first();
+            $edit_category = Category::latest()->first();
+            Notification::send($user, new \App\Notifications\Edit_Category($edit_category));
         }
         session()->flash('success_message','Category has been updated successfully!');
     }
@@ -76,6 +83,6 @@ class AdminEditCategoryComponent extends Component
     public function render()
     {
         $categories = Category::all();
-        return view('livewire.admin.admin-edit-category-component',['categories'=>$categories])->layout('layouts.base');
+        return view('livewire.admin.admin-edit-category-component',['categories'=>$categories])->layout('layouts.master');
     }
 }

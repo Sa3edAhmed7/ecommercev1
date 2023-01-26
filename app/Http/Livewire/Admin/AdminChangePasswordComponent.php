@@ -3,9 +3,12 @@
 namespace App\Http\Livewire\Admin;
 
 use App\Models\User;
+use App\Mail\TestMail;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
 
 class AdminChangePasswordComponent extends Component
 {
@@ -32,6 +35,11 @@ class AdminChangePasswordComponent extends Component
             $user = User::findOrFail(Auth::user()->id);
             $user->password = Hash::make($this->password);
             $user->save();
+
+            $users = User::findOrFail(Auth::user()->id)->first();
+            $change_password = User::latest()->first();
+            Notification::send($users, new \App\Notifications\Change_Password($change_password));
+
             session()->flash('password_success','Password has been changed successfully!');
         }
         else
@@ -41,6 +49,6 @@ class AdminChangePasswordComponent extends Component
     }
     public function render()
     {
-        return view('livewire.admin.admin-change-password-component')->layout('layouts.base');
+        return view('livewire.admin.admin-change-password-component')->layout('layouts.master');
     }
 }

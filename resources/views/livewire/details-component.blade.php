@@ -163,7 +163,7 @@
                                 <a href="#add_infomation" class="tab-control-item">Addtional Infomation</a>
                                 <a href="#review" class="tab-control-item">Reviews</a>
                             </div>
-                            <div class="tab-contents">
+                            <div class="tab-contents" style="over-flow-y:scroll;scrollbar-width:none;">
                                 <div class="tab-content-item active" id="description">
                                     {!! $product->description !!}
                                 </div>

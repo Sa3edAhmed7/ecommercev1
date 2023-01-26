@@ -1,216 +1,191 @@
-<div>
-    <style>
-        nav svg{
-            height: 20px;
-        }
-        nav .hidden{
-            display: block !important;
-        }
-    </style>
-<div class="container" style="padding:30px 0;">
-        <div class="row">
-            <div class="col-md-12">
-            <div class="panel panel-default">
-            <div class="panel-heading">
-            <div class="row">
-            <div class="col-md-6">
-            Ordered Details
-            </div>
-            <div class="col-md-6">
-                    <a href="{{ route('admin.orders') }}" class="btn btn-danger pull-right">All Orders</a>
-            </div>
-            </div>
-            </div>
-            <div class="panel-body">
-            <table class="table">
-                <tr>
-                    <th>Order Id</th>
-                    <td style="color:#ff3c45;">{{ $order->id }}</td>
-                    <th>Order Date</th>
-                    <td style="color:#ff3c45;">{{ $order->created_at }}</td>
-                    <th>Status</th>
-                    <td style="color:#ff3c45;">{{ $order->status }}</td>
-                    @if($order->status == "delivered")
-                    <th>Delivery Date</th>
-                    <td style="color:#ff3c45;">{{ $order->delivered_date }}</td>
-                    @elseif($order->status == "canceled")
-                    <th>Cancellation Date</th>
-                    <td style="color:#ff3c45;">{{ $order->canceled_date }}</td>
-                    @endif
-                </tr>
-            </table>
-            </div>
-            </div>
-            </div>
-        </div>
-        <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-default">
-            <div class="panel-heading">
-            <div class="row">
-            <div class="col-md-6">
-            Ordered Items
-            </div>
-            </div>
-            </div>
-            <div class="panel-body">
-            <div class="wrap-iten-in-cart">
-            <h3 class="box-title">Products Name</h3>
-            <ul class="products-cart">
-                @foreach ($order->orderItems as $item)
-                <li class="pr-cart-item">
-                    <div class="product-image">
-                        <figure><img src="{{asset('assets')}}/images/products/{{ $item->product->image }}" alt="{{ $item->product->name }}"></figure>
-                    </div>
-                    <div class="product-name">
-                        <a class="link-to-product" href="{{ route('product.details',['slug'=>$item->product->slug]) }}">{{ $item->product->name }}</a>
-                    </div>
-                    @if($item->options)
-                    <div class="product-name">
-                        @foreach(unserialize($item->options) as $key => $value)
-                            <p><b>{{$key}}: {{$value}}</b></p>
-                        @endforeach
-                    </div>
-                    @endif
-                    <div class="price-field produtc-price"><p class="price" style="color:#ff3c45;">${{ $item->price }}</p></div>
-                    <div class="quantity">
-                        <p style="color:#ff3c45; font-size:15px;">{{ $item->quantity }}</p>
-                    </div>
-                    <div class="price-field sub-total"><p class="price" style="color:#ff3c45;">${{ $item->price * $item->quantity }}</p></div>
-                </li>
-            @endforeach											
-            </ul>
-            </div>
-            <div class="summary">
-                <div class="order-summary">
-                    <h4 class="title-box">Order Summary</h4>
-                <p class="summary-info"><span class="title">Subtotal</span><b class="index" style="color:#ff3c45;">${{ $order->subtotal }}</b></p>
-                <p class="summary-info"><span class="title">Tax</span><b class="index" style="color:#ff3c45;">${{ $order->tax }}</b></p>
-                <p class="summary-info"><span class="title">Shipping</span><b class="index" style="color:#ff3c45;">Free Shipping</b></p>
-                <p class="summary-info"><span class="title">Total</span><b class="index" style="color:#ff3c45;">${{ $order->total }}</b></p>
+@section('title')
+  Ordered Details
+  @stop
+@can('Ordered Details')
+<style>
+   @media print {
+     #print_Button {
+    display: none;
+    padding:0px;
+    margin:0px;
+   }
+  }
+</style>
+<div class="main-content" id="print">
+        <section class="section">
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header">
+                  <h4>Ordered Details</h4>
+                  <div class="mx-auto"><img alt="image" src="{{asset('assets/admin/img/logo.png')}}" width="50px" class="header-logo"><span class="logo-name"><b> Ecommerce</b></span></div>
                 </div>
-            </div>
-            </div>
-            </div>
-        </div>
-    </div>
+                <div class="card-body p-3">
+                  <div class="table-responsive">
+                    <table class="table table-striped table-hover dataTable no-footer">
+                      <tr class="text-center">
+                        <th>OrderId : <b>{{ $order->id }}</b></th>
+                        <th>Order Date : <b>{{ $order->created_at }}</b></th>
+                        <th>Status : <b class="badge bg-light">{{ $order->status }}</b></th>
+                        @if($order->status == "delivered")
+                        <th>Delivery Date : <b>{{ $order->delivered_date }}</b></th>
+                        @elseif($order->status == "canceled")
+                        <th>Cancellation Date : <b>{{ $order->canceled_date }}</b></th>
+                        @endif
+                      </tr>
+                    </table>
+                  </div>                 
+                </div>
+                <button class="btn btn-primary mx-auto" style="" id="print_Button" value="print_Button" onclick="printDiv()"> <i
+                    class="fas fa-print"></i> Print</button>   
+                <div class="card-header">
+                  <h4>Ordered Items</h4>
+                </div>
+                <div class="card-body p-3">
+                  <div class="table-responsive">
+                    <table class="table table-striped table-hover dataTable no-footer">
+                    @foreach ($order->orderItems as $item)
+                      <tr>
+                        <th>
+                        <figure><a href="{{ route('product.details',['slug'=>$item->product->slug]) }}"><img src="{{asset('assets')}}/images/products/{{ $item->product->image }}" width="100px" alt="{{ $item->product->name }}"></figure></th></a>
+                        <td><p><b>{{ $item->product->name }}</b></p></td> 
+                        <td>
+                        @if($item->options)
+                        <div>
+                        @foreach(unserialize($item->options) as $key => $value)
+                        <p><b>{{$key}}</b> : <b>{{$value}}</b></p>
+                        @endforeach
+                        </div>
+                        @endif
+                        </td>
+                        <td><p><b>${{ $item->price }}</b></p></div></td>
+                        <td><p style="font-size:15px;"><b>{{ $item->quantity }}</b></p></td>
+                        <td><p><b>${{ $item->price * $item->quantity }}</b></p></td>
+                      </tr>
+                      @endforeach
+                      <tr class="text-center">
+                        <th>Subtotal : </th>
+                        <td><b>${{ $order->subtotal }}</b></td>
+                        <tr class="text-center">
+                        <th>Tax : </th>
+                        <td><b>${{ $order->tax }}</b></td>
+                        </tr>
+                        <tr class="text-center">
+                        <th>Shipping : </th>
+                        <td><b>Free Shipping</b></td>
+                        </tr>
+                        <tr class="text-center">
+                        <th>Total : </th>
+                        <td><b class="badge bg-light">${{ $order->total }}</b></td> 
+                        </tr>
+                      </tr>
+                    </table>
+                    
+                  </div>
+                </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-default">
-            <div class="panel-heading">
-            Billing Details
-            </div>
-            <div class="panel-body">
-            <table class="table">
-                <tr>
-                    <th>First Name</th>
-                    <td style="color:#ff3c45;">{{ $order->firstname }}</td>
-                    <th>Last Name</th>
-                    <td style="color:#ff3c45;">{{ $order->lastname }}</td>
-                </tr>
-                <tr>
-                    <th>Phone</th>
-                    <td style="color:#ff3c45;">{{ $order->mobile }}</td>
-                    <th>Email</th>
-                    <td style="color:#ff3c45;">{{ $order->email }}</td>
-                </tr>
-                <tr>
-                    <th>Line1</th>
-                    <td style="color:#ff3c45;">{{ $order->line1 }}</td>
-                    <th>Line2</th>
-                    <td style="color:#ff3c45;">{{ $order->line2 }}</td>
-                </tr>
-                <tr>
-                    <th>City</th>
-                    <td style="color:#ff3c45;">{{ $order->city }}</td>
-                    <th>Province</th>
-                    <td style="color:#ff3c45;">{{ $order->province }}</td>
-                </tr>
-                <tr>
-                    <th>Country</th>
-                    <td style="color:#ff3c45;">{{ $order->country }}</td>
-                    <th>ZipCode</th>
-                    <td style="color:#ff3c45;">{{ $order->zipcode }}</td>
-                </tr>
-            </table>
-            </div>
-            </div>
-        </div>
-        </div>
+                <div class="card-header">
+                  <h4>Billing Details</h4>
+                </div>
+                <div class="card-body p-3">
+                  <div class="table-responsive">
+                    <table class="table table-striped table-hover dataTable no-footer">
+                        <tr class="text-center">
+                        <th>First Name :<td><b>{{ $order->firstname }}</b></td></th>
+                        <th>Last Name :<td><b>{{ $order->lastname }}</b></td></th>
+                        </tr>
+                        <tr class="text-center">
+                        <th>Phone :<td><b>{{ $order->mobile }}</b></td></th>
+                        <th>Email :<td><b>{{ $order->email }}</b></td></th>
+                        </tr>
+                        <tr class="text-center">
+                        <th>Line1 :<td><b>{{ $order->line1 }}</b></td></th>
+                        <th>Line2 :<td><b>{{ $order->line2 }}</b></td></th>
+                        </tr>
+                        <tr class="text-center">
+                        <th>City :<td><b>{{ $order->city }}</b></td></th>
+                        <th>Province :<td><b>{{ $order->province }}</b></td></th>
+                        </tr>
+                        <tr class="text-center">
+                        <th>Country :<td><b>{{ $order->country }}</b></td></th>
+                        <th>ZipCode :<td><b>{{ $order->zipcode }}</b></td></th>
+                        </tr>
+                    </table>
+                  </div>
+                </div>
 
         @if($order->is_shipping_different)
-        <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-default">
-            <div class="panel-heading">
-            Shiping Details
-            </div>
-            <div class="panel-body">
-            <table class="table">
-                <tr>
-                    <th>First Name</th>
-                    <td style="color:#ff3c45;">{{ $order->shipping->firstname }}</td>
-                    <th>Last Name</th>
-                    <td style="color:#ff3c45;">{{ $order->shipping->lastname }}</td>
-                </tr>
-                <tr>
-                    <th>Phone</th>
-                    <td style="color:#ff3c45;">{{ $order->shipping->mobile }}</td>
-                    <th>Email</th>
-                    <td style="color:#ff3c45;">{{ $order->shipping->email }}</td>
-                </tr>
-                <tr>
-                    <th>Line1</th>
-                    <td style="color:#ff3c45;">{{ $order->shipping->line1 }}</td>
-                    <th>Line2</th>
-                    <td style="color:#ff3c45;">{{ $order->shipping->line2 }}</td>
-                </tr>
-                <tr>
-                    <th>City</th>
-                    <td style="color:#ff3c45;">{{ $order->shipping->city }}</td>
-                    <th>Province</th>
-                    <td style="color:#ff3c45;">{{ $order->shipping->province }}</td>
-                </tr>
-                <tr>
-                    <th>Country</th>
-                    <td style="color:#ff3c45;">{{ $order->shipping->country }}</td>
-                    <th>ZipCode</th>
-                    <td style="color:#ff3c45;">{{ $order->shipping->zipcode }}</td>
-                </tr>
-            </table>
-            </div>
-            </div>
-        </div>
-        </div>
+                <div class="card-header">
+                  <h4>Shiping Details</h4>
+                </div>
+                <div class="card-body p-3">
+                  <div class="table-responsive">
+                    <table class="table table-striped table-hover dataTable no-footer">
+                        <tr class="text-center">
+                        <th>First Name :<td><b>{{ $order->shipping->firstname }}</b></td></th>                      
+                        <th>Last Name :<td><b>{{ $order->shipping->lastname }}</b></td></th>
+                        </tr>
+                        <tr class="text-center">
+                        <th>Phone :<td><b>{{ $order->shipping->mobile }}</b></td></th>                       
+                        <th>Email :<td><b>{{ $order->shipping->email }}</b></td></th>                       
+                        </tr>
+                        <tr class="text-center">
+                        <th>Line1 :<td><b>{{ $order->shipping->line1 }}</b></td></th>
+                        
+                        <th>Line2 :<td><b>{{ $order->shipping->line2 }}</b></td></th>
+                        </tr>
+                        <tr class="text-center">
+                        <th>City :<td><b>{{ $order->shipping->city }}</b></td></th>                       
+                        <th>Province :<td><b>{{ $order->shipping->province }}</b></td></th>                      
+                        </tr>
+                        <tr class="text-center">
+                        <th>Country :<td><b>{{ $order->shipping->country }}</b></td></th>                       
+                        <th>ZipCode :<td><b>{{ $order->shipping->zipcode }}</b></td></th>                    
+                        </tr>
+                    </table>
+                  </div>
+                </div>
         @endif
+        <div class="card-header">
+                  <h4>Transaction</h4>
+                </div>
+                <div class="card-body p-3">
+                  <div class="table-responsive">
+                    <table class="table table-striped table-hover dataTable no-footer">
+                    <tr class="text-center">
+                        <th>Transaction Mode : <b>{{ $order->transaction->mode }}</b></th>
+                        <th>Status : <b class="badge bg-light">{{ $order->transaction->status }}</b></th>
+                        <th>Transaction Date : <b>{{ $order->transaction->created_at }}</b></th>
+                        </tr>
+                    </table>
+                  </div>
+                </div>
 
-        <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-default">
-            <div class="panel-heading">
-            Transaction
+                </div>
             </div>
-            <div class="panel-body">
-            <table class="table">
-                <tr>
-                    <th>Transaction Mode</th>
-                    <td style="color:#ff3c45;">{{ $order->transaction->mode }}</td>
-                </tr>
-                <tr>
-                    <th>Status</th>
-                    <td style="color:#ff3c45;">{{ $order->transaction->status }}</td>
-                </tr>
-                <tr>
-                    <th>Transaction Date</th>
-                    <td style="color:#ff3c45;">{{ $order->transaction->created_at }}</td>
-                </tr>
-            </table>
-            </div>
-            </div>
-        </div>
-        </div>
+          </div>
+        </section>
 </div>
+@push('scripts')
 
+<script type="text/javascript">
+              var hidden = false;
+              function printDiv() {
+              hidden = !hidden;
+              if(hidden) {
+                  document.getElementById('print_Button').style.visibility = 'hidden';
+                  var printContents = document.getElementById('print').innerHTML;
+                  var originalContents = document.body.innerHTML;
+                  document.body.innerHTML = printContents;
+                  window.print();
+                  document.body.innerHTML = originalContents;
+                  location.reload();
+              } else {
+                  document.getElementById('print_Button').style.visibility = 'visible';
+              }
+            }
+  </script>
+  @endpush
 
+  @endcan
 

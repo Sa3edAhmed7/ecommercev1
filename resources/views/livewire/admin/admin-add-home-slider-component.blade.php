@@ -1,84 +1,113 @@
-<div>
-    <div class="container" style="padding:30px 0;">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <div class="row">
-                <div class="col-md-6">
-                    Add New Slide
-                </div>
-                <div class="col-md-6">
-                    <a href="{{ route('admin.homeslider') }}" class="btn btn-success pull-right">All Slides</a>
-                </div>
-                </div>
-                </div>
-                <div class="panel-body">
-                @if(Session::has('success_message'))
-                    <div class = "alert alert-success">
-                    <strong>Success</strong> {{Session::get('success_message')}}
-                    </div>
-                    @endif
-                    <form class="form-horizontal" wire:submit.prevent="storeSlider">
-                    
-                    <div class="form-group">
-                        <label class="col-md-4 control-label">Title</label>
-                        <div class="col-md-4">
-                    <input type="text" placeholder="Title" class="form-control input-md" wire:model="title" />
-                    </div>
-                </div>
+@section('title')
+    Add New Slide
+    @stop
+@can('Add New Slide')
+<div class="main-content">
+    <section class="section">
+        <div class="section-body">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Add New Slide</h4>
+                            <a href="{{ route('admin.homeslider') }}" class="btn btn-primary pull-right">All Slides</a>
+                        </div>
+                        <div class="card-body">
+                        <div class="table">
+                            @if(Session::has('success_message'))
+                                <div class="alert alert-success alert-has-icon">
+                                    <div class="alert-icon"><i class="far fa-lightbulb"></i></div>
+                                    <div class="alert-body">
+                                        <div class="alert-title">success</div>
+                                        {{Session::get('success_message')}}
+                                    </div>
+                                </div>
+                                @endif
+                                @if(Session::has('error_message'))
+                                <div class="alert alert-danger alert-has-icon">
+                                    <div class="alert-icon"><i class="far fa-lightbulb"></i></div>
+                                    <div class="alert-body">
+                                        <div class="alert-title">error</div>
+                                        {{Session::get('error_message')}}
+                                    </div>
+                                </div>
+                                @endif
+                            <form class="form-horizontal" wire:submit.prevent="storeSlider">
+                                <div class="form-group row mb-4">
+                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Title</label>
+                                    <div class="col-sm-12 col-md-7">
+                                        <input type="text" placeholder="Title" class="form-control"
+                                            wire:model="title">
+                                        @error('title') <p class="text-danger">{{$message}}</p> @enderror
+                                    </div>
+                                </div>
 
-                <div class="form-group">
-                        <label class="col-md-4 control-label">Subtitle</label>
-                        <div class="col-md-4">
-                    <input type="text" placeholder="Subtitle" class="form-control input-md" wire:model="subtitle" />
-                    </div>
-                </div>
+                                <div class="form-group row mb-4">
+                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Subtitle</label>
+                                    <div class="col-sm-12 col-md-7">
+                                        <input type="text" placeholder="Subtitle" class="form-control"
+                                            wire:model="subtitle">
+                                        @error('subtitle') <p class="text-danger">{{$message}}</p> @enderror
+                                    </div>
+                                </div>
 
-                <div class="form-group">
-                        <label class="col-md-4 control-label">Price</label>
-                        <div class="col-md-4">
-                    <textarea class="form-control" placeholder="Price" wire:model="price"></textarea>
-                    </div>
-                </div>
+                                <div class="form-group row mb-4">
+                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Price</label>
+                                    <div class="col-sm-12 col-md-7">
+                                        <input type="text" placeholder="Price" class="form-control"
+                                            wire:model="price">
+                                        @error('price') <p class="text-danger">{{$message}}</p> @enderror
+                                    </div>
+                                </div>
 
-                <div class="form-group">
-                        <label class="col-md-4 control-label">Link</label>
-                        <div class="col-md-4">
-                    <textarea class="form-control" placeholder="Link" wire:model="link"></textarea>
-                    </div>
-                </div>
+                                <div class="form-group row mb-4">
+                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Link</label>
+                                    <div class="col-sm-12 col-md-7">
+                                        <input type="text" placeholder="Link" class="form-control"
+                                            wire:model="link">
+                                        @error('link') <p class="text-danger">{{$message}}</p> @enderror
+                                    </div>
+                                </div>
 
-                <div class="form-group">
-                        <label class="col-md-4 control-label">Image</label>
-                        <div class="col-md-4">
-                    <input type="file" class="input-file" wire:model="image" />
-                    @if($image)
-                    <img src="{{ $image->temporaryUrl() }}" width="120" />
-                    @endif
-                    </div>
-                </div>
 
-                <div class="form-group">
-                        <label class="col-md-4 control-label">Status</label>
-                        <div class="col-md-4">
-                    <select class="form-control" wire:model="status">
-                    <option value="0">Inactive</option>
-                    <option value="1">Active</option>
-                    </select>
-                    </div>
-                </div>
+                                <div class="form-group row mb-4">
+                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Image</label>
+                                    <div class="col-sm-12 col-md-7">
+                                        <input type="file" class="input-file" wire:model="image" />
+                                        @if($image)
+                                        <img src="{{ $image->temporaryUrl() }}" width="120" />
+                                        @endif
+                                        @error('image') <p class="text-danger">{{$message}}</p> @enderror
+                                    </div>
+                                </div>
 
-                <div class="form-group">
-                        <label class="col-md-4 control-label"></label>
-                        <div class="col-md-4">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+
+                                <div class="form-group row mb-4">
+                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Status</label>
+                                    <div class="col-sm-12 col-md-7">
+                                        <select class="form-control selectric" wire:model="status">
+                                            <option value="0">Inactive</option>
+                                            <option value="1">Active</option>
+                                        </select>
+                                        @error('status') <p class="text-danger">{{$message}}</p> @enderror
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group row mb-4">
+                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
+                                    <div class="col-sm-12 col-md-7">
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
-                </form>
             </div>
+
         </div>
-    </div>
+    </section>
 </div>
-</div>
-</div>
+
+@endcan

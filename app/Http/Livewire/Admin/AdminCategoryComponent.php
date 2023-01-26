@@ -2,30 +2,35 @@
 
 namespace App\Http\Livewire\Admin;
 
+use App\Models\User;
 use Livewire\Component;
 use App\Models\Category;
 use App\Models\Subcategory;
-use Livewire\WithPagination;
-
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class AdminCategoryComponent extends Component
 {
-    use WithPagination;
     public function deleteCategory($id)
     {
-        $category =  Category::findOrFail($id);
+        $category = Category::findOrFail($id);
         $category->delete();
+
+
+        $user = User::findOrFail(Auth::user()->id)->first();
+        $delete_category = Category::latest()->first();
+        Notification::send($user, new \App\Notifications\Delete_Category($delete_category));
         session()->flash('success_message','Category has been deleted successfully!');
     }
-    public function deleteSubcategory($id)
+
+    public function destroySubcategory($id)
     {
-        $category =  Subcategory::findOrFail($id);
-        $category->delete();
+        Subcategory::findOrFail($id)->delete();
         session()->flash('success_message','Subcategory has been deleted successfully!');
     }
     public function render()
     {
-        $categories = Category::paginate(5);
-        return view('livewire.admin.admin-category-component',['categories'=>$categories])->layout('layouts.base');
+        $categories = Category::all();
+        return view('livewire.admin.admin-category-component',['categories'=>$categories])->layout('layouts.master');
     }
 }

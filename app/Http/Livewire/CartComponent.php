@@ -6,6 +6,7 @@ namespace App\Http\Livewire;
 use Cart;
 use Carbon\Carbon;
 use App\Models\Coupon;
+use App\Models\Setting;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 
@@ -109,7 +110,7 @@ class CartComponent extends Component
 
      public function removeCoupon()
      {
-        session()->forget('coupon');  
+        session()->forget('coupon');
      }
 
      public function checkout()
@@ -161,7 +162,7 @@ class CartComponent extends Component
                 else
                 {
                     $this->calculateDiscounts();
-                }   
+                }
             }
             $this->setAmountForCheckout();
 
@@ -169,6 +170,7 @@ class CartComponent extends Component
             {
                 Cart::instance('cart')->store(Auth::user()->email);
             }
-        return view('livewire.cart-component')->layout('layouts.base');
+            $settings = Setting::find(1);
+        return view('livewire.cart-component',['settings'=>$settings])->layout('layouts.base');
     }
 }

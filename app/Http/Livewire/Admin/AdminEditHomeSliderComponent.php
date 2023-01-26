@@ -2,14 +2,17 @@
 
 namespace App\Http\Livewire\Admin;
 
+use App\Models\User;
 use Livewire\Component;
 use App\Models\HomeSlider;
 use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class AdminEditHomeSliderComponent extends Component
 {
     use WithFileUploads;
-    
+
     public $title;
     public $subtitle;
     public $price;
@@ -26,9 +29,15 @@ class AdminEditHomeSliderComponent extends Component
             'subtitle' =>  'required',
             'price' =>  'required',
             'link' =>  'required',
-            'image' =>  'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'status' =>  'required',
         ]);
+
+        if($this->newimage)
+        {
+            $this->validateOnly($fields,[
+            'newimage' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
+        }
     }
 
     public function mount($slide_id)
@@ -50,9 +59,16 @@ class AdminEditHomeSliderComponent extends Component
             'subtitle' =>  'required',
             'price' =>  'required',
             'link' =>  'required',
-            'image' =>  'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'status' =>  'required',
         ]);
+
+        if($this->newimage)
+        {
+            $this->validate([
+            'newimage' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
+        }
+
         $slider = HomeSlider::findOrFail($this->slider_id);
         $slider->title = $this->title;
         $slider->subtitle = $this->subtitle;
@@ -66,11 +82,16 @@ class AdminEditHomeSliderComponent extends Component
         }
         $slider->status = $this->status;
         $slider->save();
+
+
+        $user = User::findOrFail(Auth::user()->id)->first();
+        $edit_slide = HomeSlider::latest()->first();
+        Notification::send($user, new \App\Notifications\Edit_Slide($edit_slide));
         session()->flash('success_message','Slider has been updated successfully!');
     }
 
     public function render()
     {
-        return view('livewire.admin.admin-edit-home-slider-component')->layout('layouts.base');
+        return view('livewire.admin.admin-edit-home-slider-component')->layout('layouts.master');
     }
 }

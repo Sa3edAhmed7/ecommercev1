@@ -18,7 +18,9 @@ class AdminProfileComponent extends Component
             $profile->user_id = Auth::user()->id;
             $profile->save();
         }
+
         $user = User::find(Auth::user()->id);
-        return view('livewire.admin.admin-profile-component',['user'=>$user])->layout('layouts.base');
+
+        return view('livewire.admin.admin-profile-component',['user'=>$user])->layout('layouts.master');
     }
 }

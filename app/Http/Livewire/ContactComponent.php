@@ -1,10 +1,14 @@
 <?php
 
 namespace App\Http\Livewire;
-
+use App\Models\User;
+use App\Mail\TestMail;
 use App\Models\Contact;
 use App\Models\Setting;
 use Livewire\Component;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
 
 class ContactComponent extends Component
 {
@@ -38,6 +42,12 @@ class ContactComponent extends Component
         $contact->phone = $this->phone;
         $contact->comment = $this->comment;
         $contact->save();
+
+        $user = User::findOrFail(Auth::user()->id)->first();
+        $message_contact = Contact::latest()->first();
+        Notification::send($user, new \App\Notifications\Messages($message_contact));
+
+        Mail::to($contact->email)->send(new TestMail($contact));
         session()->flash('message','Thanks, Your message has been sent successfully!');
     }
 

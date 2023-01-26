@@ -22,8 +22,9 @@ return new class extends Migration
             $table->string('password_confirmation');
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
-            $table->string('profile_photo_path', 2048)->nullable();
+            $table->string('profile_photo_path', 2048)->default('defualt.png');
             $table->string('utype')->default('USR')->comment('ADM for Admin and USR for User or Customer');
+            $table->string('role')->default(null);
             $table->timestamps();
         });
     }

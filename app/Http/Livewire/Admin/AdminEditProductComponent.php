@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Admin;
 
 
+use App\Models\User;
 use App\Models\Product;
 use Livewire\Component;
 use App\Models\Category;
@@ -11,6 +12,8 @@ use Illuminate\Support\Str;
 use Livewire\WithFileUploads;
 use App\Models\AttributeValue;
 use App\Models\ProductAttribute;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class AdminEditProductComponent extends Component
 {
@@ -37,7 +40,7 @@ class AdminEditProductComponent extends Component
     public $inputs = [];
     public $attribute_arr = [];
     public $attribute_values = [];
-    
+
 
     public function mount($product_slug)
     {
@@ -81,6 +84,7 @@ class AdminEditProductComponent extends Component
         }
     }
 
+
     public function generateslug()
     {
         $this->slug = Str::slug($this->name,'-');
@@ -90,18 +94,27 @@ class AdminEditProductComponent extends Component
     {
         $this->validateOnly($fields,[
             'name' => 'required',
-            'slug' =>  'required|unique:products',
+            'slug' =>  'required',
             'short_description' =>  'required',
             'description' =>  'required',
-            'regular_price' =>  'required',
-            'sale_price' =>  'required',
+            'regular_price' =>  'required|numeric',
+            'sale_price' =>  'numeric',
             'SKU' =>  'required',
             'stock_status' =>  'required',
             'featured' =>  'required',
+<<<<<<< HEAD
             'quantity' =>  'required',
+=======
+            'quantity' =>  'required|numeric',
+>>>>>>> 1b84a1e (first)
             'category_id' =>  'required',
+            'attribute_values.*' => 'required',
         ]);
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 1b84a1e (first)
         if($this->newimage)
         {
             $this->validateOnly($fields,[
@@ -122,18 +135,27 @@ class AdminEditProductComponent extends Component
     {
         $this->validate([
             'name' => 'required',
-            'slug' =>  'required|unique:products',
+            'slug' =>  'required',
             'short_description' =>  'required',
             'description' =>  'required',
-            'regular_price' =>  'required',
-            'sale_price' =>  'required',
+            'regular_price' =>  'required|numeric',
+            'sale_price' =>  'numeric',
             'SKU' =>  'required',
             'stock_status' =>  'required',
             'featured' =>  'required',
+<<<<<<< HEAD
             'quantity' =>  'required',
+=======
+            'quantity' =>  'required|numeric',
+>>>>>>> 1b84a1e (first)
             'category_id' =>  'required',
+            'attribute_values.*' => 'required',
         ]);
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 1b84a1e (first)
         if($this->newimage)
         {
             $this->validate([
@@ -148,7 +170,11 @@ class AdminEditProductComponent extends Component
             'newimages.*' => 'mimes:jpeg,png,jpg,gif,svg',
             ]);
         }
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 1b84a1e (first)
         $product = Product::findOrFail($this->product_id);
         $product->name = $this->name;
         $product->slug = $this->slug;
@@ -188,7 +214,7 @@ class AdminEditProductComponent extends Component
                 $image->storeAs('products',$imgName);
                 $imagesName = $imagesName . ',' . $imgName;
             }
-            
+
             $product->images = $imagesName;
         }
         $product->category_id = $this->category_id;
@@ -211,7 +237,12 @@ class AdminEditProductComponent extends Component
                 $attr_value->save();
             }
         }
-        session()->flash('message','Product has been updated successfully!');
+
+
+        $user = User::findOrFail(Auth::user()->id)->first();
+        $edit_product = Product::latest()->first();
+        Notification::send($user, new \App\Notifications\Edit_Product($edit_product));
+        return redirect(route('admin.products'))->with(session()->flash('message','Product has been updated successfully!'));
     }
 
     public function changeSubcategory()
@@ -224,7 +255,7 @@ class AdminEditProductComponent extends Component
         $categories = Category::all();
         $scategories = Subcategory::where('category_id',$this->category_id)->get();
         $pattributes = ProductAttribute::all();
-        return view('livewire.admin.admin-edit-product-component',['categories'=>$categories,'scategories'=>$scategories,'pattributes'=>$pattributes])->layout('layouts.base');
-        
+        return view('livewire.admin.admin-edit-product-component',['categories'=>$categories,'scategories'=>$scategories,'pattributes'=>$pattributes])->layout('layouts.master');
+
     }
 }

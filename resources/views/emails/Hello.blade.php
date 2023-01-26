@@ -101,31 +101,9 @@
     </style>
 </head>
 
-<body style="background-color: #f4f4f4; margin: 0 !important; padding: 0 !important; border: 3px solid #D10024 !important;">
+<body>
 <!-- HIDDEN PREHEADER TEXT -->
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
-    <!-- LOGO -->
-    <tr>
-        <td bgcolor="#15161D" align="center">
-            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
-                <tr>
-                    <td align="center" valign="top" style="padding: 40px 10px 40px 10px;"> </td>
-                </tr>
-            </table>
-        </td>
-    </tr>
-    <tr>
-        <td bgcolor="#15161D"  align="center" style="padding: 0px 10px 0px 10px;">
-            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
-                <tr>
-                    <td bgcolor="#ffffff" align="center" valign="top" style="padding: 40px 20px 20px 20px; border-radius: 4px 4px 0px 0px; color: #111111; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 48px; font-weight: 400; letter-spacing: 4px; line-height: 48px; border-top: 3px solid #D10024;">
-                        <img src="{{asset('assets')}}/images/logo-top-2.png" width="125" height="120" style="display: block; border: 0px;" alt="" />
-                        <h4 style="font-size: 35px; font-weight: 400; margin: 2; color:#D10024;">{{$data['subject']}}</h4>
-                    </td>
-                </tr>
-            </table>
-        </td>
-    </tr>
     <tr>
         <td bgcolor="#f4f4f4" align="center" style="padding: 0px 10px 0px 10px;">
             <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
@@ -136,20 +114,13 @@
                 </tr>-->
                 <tr>
                     <td bgcolor="#ffffff" align="left" style="padding: 0px 30px 20px 30px; color: #000000; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
-                        <h3 style="margin: 0;">{{$data['message']}}</h3>
+                        <h3 style="margin: 0;">{{$data['comment']}}</h3>
                     </td>
                 </tr>
                 <tr>
                     <td bgcolor="#ffffff" align="left">
                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                             <tr>
-                                <td bgcolor="#ffffff" align="center" style="padding: 20px 30px 30px 30px;">
-                                    <table border="0" cellspacing="0" cellpadding="0">
-                                        <tr>
-                                            <td align="center"><a href="" target="_blank" style="font-size: 20px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; display: inline-block; border: 3px solid #D10024;"><img src="{{asset('assets')}}/front/img/logodark.png" width="125" height="120" style="display: block; border: 0px;" alt="" /></a></td>
-                                        </tr>
-                                    </table>
-                                </td>
                             </tr>
                         </table>
                     </td>

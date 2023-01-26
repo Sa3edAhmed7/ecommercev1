@@ -2,8 +2,11 @@
 
 namespace App\Http\Livewire\Admin;
 
+use App\Models\User;
 use App\Models\Coupon;
 use Livewire\Component;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class AdminEditCouponComponent extends Component
 {
@@ -24,7 +27,7 @@ class AdminEditCouponComponent extends Component
         $this->expiry_date = $coupon->expiry_date;
         $this->coupon_id = $coupon->id;
     }
-    
+
     public function updated($fields)
     {
         $this->validateOnly($fields,[
@@ -52,11 +55,16 @@ class AdminEditCouponComponent extends Component
         $coupon->cart_value = $this->cart_value;
         $coupon->expiry_date = $this->expiry_date;
         $coupon->save();
+
+
+        $user = User::findOrFail(Auth::user()->id)->first();
+        $edit_coupon = Coupon::latest()->first();
+        Notification::send($user, new \App\Notifications\Edit_Coupon($edit_coupon));
         session()->flash('success_message','Coupon has been updated successfully!');
     }
 
     public function render()
     {
-        return view('livewire.admin.admin-edit-coupon-component')->layout('layouts.base');
+        return view('livewire.admin.admin-edit-coupon-component')->layout('layouts.master');
     }
 }

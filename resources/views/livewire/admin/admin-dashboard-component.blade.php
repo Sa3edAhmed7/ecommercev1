@@ -1,184 +1,169 @@
+@section('title')
+    Dashboard
+@stop
+@can('Dashboard')
+<div class="main-content">
+        <section class="section">
+          <div class="row ">
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+              <div class="card">
+                <div class="card-statistic-4">
+                  <div class="align-items-center justify-content-between">
+                    <div class="row ">
+                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
+                        <div class="card-content">
+                          <h5 class="font-15">Total Revenue</h5>
+                          <h2 class="mb-3 font-18 col-blue">${{$totalRevenue}}</h2>
+                        </div>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
+                        <div class="banner-img">
+                          <img src="{{asset('assets/admin/img/banner/1.png')}}" alt="">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+              <div class="card">
+                <div class="card-statistic-4">
+                  <div class="align-items-center justify-content-between">
+                    <div class="row ">
+                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
+                        <div class="card-content">
+                          <h5 class="font-15">Total Sales</h5>
+                          <h2 class="mb-3 font-18 col-blue">{{$totalSales}}</h2>
+                        </div>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
+                        <div class="banner-img">
+                          <img src="{{asset('assets/admin/img/banner/2.png')}}" alt="">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+              <div class="card">
+                <div class="card-statistic-4">
+                  <div class="align-items-center justify-content-between">
+                    <div class="row ">
+                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
+                        <div class="card-content">
+                          <h5 class="font-15">Today Revenue</h5>
+                          <h2 class="mb-3 font-18 col-blue">${{$todayRevenue}}</h2>
+                        </div>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
+                        <div class="banner-img">
+                          <img src="{{asset('assets/admin/img/banner/3.png')}}" alt="">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+              <div class="card">
+                <div class="card-statistic-4">
+                  <div class="align-items-center justify-content-between">
+                    <div class="row ">
+                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
+                        <div class="card-content">
+                          <h5 class="font-15">Today Sales</h5>
+                          <h2 class="mb-3 font-18 col-blue">{{$todaySales}}</h2>
+                        </div>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
+                        <div class="banner-img">
+                          <img src="{{asset('assets/admin/img/banner/4.png')}}" alt="">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header">
+                  <h4>Orders</h4>
+                  <div class="card-header-form">
+                    <form>
+                        <input type="text" class="form-control" placeholder="Search..." wire:model="searchTearm">
+                    </form>
+                  </div>
+                </div>
+                <div class="card-body p-3">
+                  <div class="table-responsive">
+                    <table class="table table-striped">
+                      <tr>
+                        <th>OrderId</th>
+                        <th>Subtotal</th>
+                        <th>Discount</th>
+                        <th>Tax</th>
+                        <th>Total</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Mobile</th>
+                        <th>Email</th>
+                        <th>Zipcode</th>
+                        <th>Status</th>
+                        <th>Order Date</th>
+                        <th class="text-center">Action</th>
+                      </tr>
+                      @foreach ($orders as $order)
+                      <tr>
+                        <td>{{ $order->id }}</td>
+                        <td>{{ $order->subtotal }}</td>
+                        <td class="align-middle">
+                          <div class="progress-text">{{ $order->discount }}</div>
+                          <div class="progress" data-height="6">
+                            <div class="progress-bar bg-success" data-width="100%"></div>
+                          </div>
+                        </td>
+                        <td class="align-middle">
+                          <div class="progress-text">{{ $order->tax }}</div>
+                          <div class="progress" data-height="6">
+                            <div class="progress-bar bg-success" data-width="{{ $order->tax }}%"></div>
+                          </div>
+                        </td>
+                        <td><div class="badge bg-primary text-white">{{ $order->total }}</div></td>
+                        <td>{{ $order->firstname }}</td>
+                            <td>{{ $order->lastname }}</td>
+                            <td>{{ $order->mobile }}</td>
+                            <td>{{ $order->email }}</td>
+                            <td>{{ $order->zipcode }}</td>
+                            @if(($order->status) == 'ordered')
+                            <td>
+                            <div class="badge badge-info">{{ $order->status }}</div>
+                            </td>
+                            @elseif(($order->status) == 'delivered')
+                            <td>
+                            <div class="badge badge-success">{{ $order->status }}</div>
+                            </td>
+                            @else 
+                            <td>
+                            <div class="badge badge-danger">{{ $order->status }}</div>
+                            </td>
+                            @endif
+                            <td>{{ $order->created_at }}</td>
+                        <td><a href="{{ route('admin.orderdetails',['order_id'=>$order->id]) }}" class="btn btn-outline-primary">Detail</a></td> 
+                      </tr>
+                      @endforeach
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+    </section>
 <div>
-    <div class="content">
-        <style>
-        .content {
-            padding-top: 40px;
-            padding-bottom: 40px;
-        }
-
-        .icon-stat {
-            display: block;
-            overflow: hidden;
-            position: relative;
-            padding: 15px;
-            margin-bottom: 1em;
-            background-color: #fff;
-            border-radius: 4px;
-            border: 1px solid #ddd;
-        }
-
-        .icon-stat-label {
-            display: block;
-            color: #999;
-            font-size: 13px;
-        }
-
-        .icon-stat-value {
-            display: block;
-            font-size: 28px;
-            font-weight: 600;
-        }
-
-        .icon-stat-visual {
-            position: relative;
-            top: 22px;
-            display: inline-block;
-            width: 32px;
-            height: 32px;
-            border-radius: 4px;
-            text-align: center;
-            font-size: 16px;
-            line-height: 30px;
-        }
-
-        .bg-primary {
-            color: #fff;
-            background: #d74b4b;
-        }
-
-        .bg-secondary {
-            color: #fff;
-            background: #6685a4;
-        }
-
-        .icon-stat-footer {
-            padding: 10px 0 0;
-            margin-top: 10px;
-            color: #aaa;
-            font-size: 12px;
-            border-top: 1px solid #eee;
-        }
-        </style>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-3 col-sm-6">
-                    <div class="icon-stat">
-                        <div class="row">
-                            <div class="col-xs-8 text-left">
-                                <span class="icon-stat-label">Total Revenue</span>
-                                <span class="icon-stat-value">${{$totalRevenue}}</span>
-                            </div>
-                            <div class="col-xs-4 text-center">
-                                <i class="fa fa-dollar icon-stat-visual bg-primary"></i>
-                            </div>
-                        </div>
-                        <div class="icon-stat-footer">
-                            <i class="fa fa-clock-o"></i> Updated Now
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6">
-                    <div class="icon-stat">
-                        <div class="row">
-                            <div class="col-xs-8 text-left">
-                                <span class="icon-stat-label">Total Sales</span>
-                                <span class="icon-stat-value">{{$totalSales}}</span>
-                            </div>
-                            <div class="col-xs-4 text-center">
-                                <i class="fa fa-gift icon-stat-visual bg-secondary"></i>
-                            </div>
-                        </div>
-                        <div class="icon-stat-footer">
-                            <i class="fa fa-clock-o"></i> Updated Now
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6">
-                    <div class="icon-stat">
-                        <div class="row">
-                            <div class="col-xs-8 text-left">
-                                <span class="icon-stat-label">Today Revenue</span>
-                                <span class="icon-stat-value">${{$todayRevenue}}</span>
-                            </div>
-                            <div class="col-xs-4 text-center">
-                                <i class="fa fa-dollar icon-stat-visual bg-primary"></i>
-                            </div>
-                        </div>
-                        <div class="icon-stat-footer">
-                            <i class="fa fa-clock-o"></i> Updated Now
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6">
-                    <div class="icon-stat">
-                        <div class="row">
-                            <div class="col-xs-8 text-left">
-                                <span class="icon-stat-label">Today Sales</span>
-                                <span class="icon-stat-value">{{$todaySales}}</span>
-                            </div>
-                            <div class="col-xs-4 text-center">
-                                <i class="fa fa-gift icon-stat-visual bg-secondary"></i>
-                            </div>
-                        </div>
-                        <div class="icon-stat-footer">
-                            <i class="fa fa-clock-o"></i> Updated Now
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            Latest Order
-                        </div>
-                        <div class="panel-body">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>OrderId</th>
-                                        <th>Subtotal</th>
-                                        <th>Discount</th>
-                                        <th>Tax</th>
-                                        <th>Total</th>
-                                        <th>First Name</th>
-                                        <th>Last Name</th>
-                                        <th>Mobile</th>
-                                        <th>Email</th>
-                                        <th>Zipcode</th>
-                                        <th>Status</th>
-                                        <th>Order Date</th>
-                                        <th class="text-center">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($orders as $order)
-                                    <tr>
-                                        <td>{{ $order->id }}</td>
-                                        <td>{{ $order->subtotal }}</td>
-                                        <td>{{ $order->discount }}</td>
-                                        <td>{{ $order->tax }}</td>
-                                        <td>{{ $order->total }}</td>
-                                        <td>{{ $order->firstname }}</td>
-                                        <td>{{ $order->lastname }}</td>
-                                        <td>{{ $order->mobile }}</td>
-                                        <td>{{ $order->email }}</td>
-                                        <td>{{ $order->zipcode }}</td>
-                                        <td>{{ $order->status }}</td>
-                                        <td>{{ $order->created_at }}</td>
-                                        <td>
-                                            <a href="{{ route('admin.orderdetails',['order_id'=>$order->id]) }}"
-                                                class="btn btn-info btn-sm">Details</a>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-</div>
+@endcan
